@@ -15,8 +15,8 @@
       --card: rgba(255,255,255,.12);
       --stroke: rgba(255,255,255,.20);
 
-      --accent: #60A5FA;   /* sky */
-      --accent2:#34D399;   /* mint */
+      --accent: #60A5FA;
+      --accent2:#34D399;
       --danger:#FB7185;
 
       --shadow: 0 22px 64px rgba(0,0,0,.45);
@@ -34,7 +34,7 @@
       overflow-x:hidden;
     }
 
-    /* ======= Premium travel slideshow background ======= */
+    /* ======= Background slideshow ======= */
     .bg{ position:fixed; inset:0; z-index:-3; background:#050711; }
     .bg .slide{
       position:absolute; inset:0;
@@ -50,7 +50,6 @@
     .bg .slide:nth-child(3){ background-image:url("https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=2200&q=80"); animation-delay:12s; }
     .bg .slide:nth-child(4){ background-image:url("https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=2200&q=80"); animation-delay:18s; }
     .bg .slide:nth-child(5){ background-image:url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=80"); animation-delay:24s; }
-
     @keyframes slideShow{
       0%{opacity:0}
       10%{opacity:1}
@@ -86,7 +85,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 18px 12px;
+      padding: 14px 12px;
     }
 
     .shell{
@@ -94,6 +93,7 @@
       display:grid;
       grid-template-columns: 1.05fr .95fr;
       gap: 14px;
+      align-items: start;
     }
 
     @media (max-width: 900px){
@@ -113,31 +113,40 @@
     }
     .panel:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.26); }
 
-    .left{ padding: 22px 18px; }
-    .right{ padding: 18px 16px; }
+    .left{ padding: 20px 18px; }
+    .right{ padding: 16px 14px; }
+
+    /* ✅ Mobile: on cache le panneau gauche pour que l’utilisateur commence direct le formulaire sans scroller */
+    @media (max-width: 900px){
+      .left{ display:none; }
+      .wrap{ padding: 10px 10px; }
+      .right{ padding: 14px 12px; }
+    }
 
     /* Brand */
-    .brand{
+    .brandRowMini{
+      display:none;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 900px){
+      .brandRowMini{ display:flex; }
+    }
+
+    .brandMini{
+      display:flex; align-items:center; gap:10px;
       font-weight: 1000;
-      letter-spacing: -1.3px;
-      font-size: clamp(34px, 4.4vw, 56px);
-      line-height: 1.02;
-      margin: 4px 0 10px;
+      letter-spacing:-.8px;
+      font-size: 18px;
     }
-    .brandSub{
-      color: var(--muted);
-      font-size: 14.5px;
-      line-height: 1.5;
-      margin: 0 0 10px;
-      max-width: 58ch;
-    }
+
     .logoDot{
       width:10px; height:10px; border-radius:50%;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       box-shadow: 0 0 0 7px rgba(96,165,250,.12);
       display:inline-block;
-      transform: translateY(-2px);
-      margin-right:10px;
     }
 
     .badge{
@@ -152,6 +161,7 @@
       font-size: 13px;
       letter-spacing:.2px;
       user-select:none;
+      white-space:nowrap;
     }
     .dot{
       width:8px; height:8px; border-radius:50%;
@@ -169,89 +179,6 @@
       font-size: clamp(22px, 2.6vw, 34px);
       line-height: 1.08;
       letter-spacing:-.5px;
-    }
-    .sub{
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: 15.5px;
-      line-height:1.55;
-      max-width: 62ch;
-    }
-
-    .priceRow{
-      margin-top: 14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      padding: 12px 12px;
-      border-radius: var(--r2);
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.14);
-    }
-    .priceRow b{font-size: 14px}
-    .priceTag{
-      font-weight: 1000;
-      font-size: 18px;
-      letter-spacing:-.3px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(52,211,153,.16);
-      border: 1px solid rgba(52,211,153,.26);
-    }
-    .instant{
-      margin-top: 10px;
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      color: rgba(255,255,255,.74);
-      font-size: 12px;
-    }
-    .instant span{
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.14);
-    }
-
-    .stepsLeft{
-      margin-top: 12px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    @media (max-width: 520px){ .stepsLeft{grid-template-columns:1fr} }
-
-    .stepCard{
-      padding: 12px 12px;
-      border-radius: var(--r2);
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.14);
-      display:flex;
-      gap:10px;
-      transition: transform .22s ease, background .22s ease, border-color .22s ease;
-    }
-    .stepCard:hover{
-      transform: translateY(-2px);
-      background: rgba(255,255,255,.11);
-      border-color: rgba(255,255,255,.18);
-    }
-    .num{
-      width:28px; height:28px; border-radius:10px;
-      display:grid; place-items:center;
-      background: rgba(96,165,250,.18);
-      border: 1px solid rgba(96,165,250,.30);
-      color: rgba(255,255,255,.96);
-      font-weight:1000;
-      font-size: 13px;
-      flex: 0 0 auto;
-    }
-    .stepCard b{font-size: 13.5px}
-    .stepCard p{
-      margin: 2px 0 0;
-      color: var(--muted2);
-      font-size: 12.7px;
-      line-height:1.35;
     }
 
     /* Form header */
@@ -285,8 +212,15 @@
       outline:none;
       transition: border-color .18s ease, background .18s ease, box-shadow .18s ease, transform .18s ease;
       backdrop-filter: blur(10px);
+      font-size: 14px;
     }
-    textarea{min-height: 92px; resize: vertical}
+
+    /* ✅ Anti-zoom iPhone: 16px minimum sur mobile */
+    @media (max-width: 900px){
+      input, textarea{ font-size: 16px; }
+    }
+
+    textarea{min-height: 100px; resize: vertical}
     input::placeholder, textarea::placeholder{color: rgba(255,255,255,.52)}
     input:focus, textarea:focus{
       border-color: rgba(96,165,250,.55);
@@ -295,22 +229,20 @@
       transform: translateY(-1px);
     }
 
-    .dateInput{
-      padding-right: 42px;
-      cursor:pointer;
-    }
+    .dateInput{ padding-right: 46px; cursor:pointer; }
     .calIcon{
       position:absolute;
-      right: 12px;
-      top: 36px;
-      width: 20px;
-      height: 20px;
-      opacity:.85;
-      pointer-events:none;
+      right: 10px;
+      top: 34px;
+      width: 22px;
+      height: 22px;
+      opacity:.92;
+      cursor:pointer;           /* ✅ cliquable */
+      pointer-events:auto;      /* ✅ reçoit le clic */
       filter: drop-shadow(0 6px 18px rgba(0,0,0,.25));
     }
 
-    /* Modern "style" pills */
+    /* Pills */
     .pillGroup{ display:flex; flex-wrap:wrap; gap: 8px; margin-top: 8px; }
     .pill{
       cursor:pointer; user-select:none;
@@ -327,7 +259,7 @@
     .pill[data-on="1"]{ background: rgba(96,165,250,.18); border-color: rgba(96,165,250,.34); }
     .sr{position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;}
 
-    /* Interests chips */
+    /* Chips */
     .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
     .chip{
       cursor:pointer; user-select:none;
@@ -338,6 +270,7 @@
       color: rgba(255,255,255,.90);
       font-size: 12.5px;
       transition: transform .16s ease, background .16s ease, border-color .16s ease;
+      white-space:nowrap;
     }
     .chip:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
     .chip[data-on="1"]{ background: rgba(96,165,250,.18); border-color: rgba(96,165,250,.32); }
@@ -433,7 +366,7 @@
       transition: width .25s ease;
     }
 
-    /* Recap box */
+    /* Recap / results cards */
     .recap{
       padding: 12px 12px;
       border-radius: 16px;
@@ -454,6 +387,47 @@
       font-weight:1000;
       color: rgba(255,255,255,.92);
       text-align:right;
+    }
+
+    .cards{
+      display:grid;
+      gap:10px;
+    }
+    .card{
+      padding: 12px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .card h3{
+      margin:0 0 6px;
+      font-size: 13.5px;
+      letter-spacing:-.2px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .tag{
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(96,165,250,.16);
+      border: 1px solid rgba(96,165,250,.26);
+      color: rgba(255,255,255,.86);
+      white-space:nowrap;
+    }
+    .muted{ color: rgba(255,255,255,.66); font-size: 12px; line-height:1.35; }
+    .divider{ height:1px; background: rgba(255,255,255,.12); margin: 10px 0; }
+
+    /* Notes counter */
+    .counterRow{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:6px;
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
     }
 
     /* ======= Custom Date Picker (desktop) ======= */
@@ -523,67 +497,24 @@
     .day.isToday{ border-color: rgba(52,211,153,.32); background: rgba(52,211,153,.10); }
     .day.isSelected{ border-color: rgba(96,165,250,.45); background: rgba(96,165,250,.22); }
 
-    /* Paywall (optionnel) */
-    .modalBackdrop{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.55);
-      backdrop-filter: blur(10px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 16px 12px;
-      z-index: 100;
-    }
-    .modal{
-      width: min(520px, 100%);
-      border-radius: 22px;
-      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.10));
-      border: 1px solid rgba(255,255,255,.22);
-      box-shadow: 0 30px 90px rgba(0,0,0,.55);
-      overflow:hidden;
-      transform: translateY(8px);
-      animation: pop .18s ease-out forwards;
-    }
-    @keyframes pop{to{transform: translateY(0)}}
-    .modalHeader{
-      padding: 16px 16px 10px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 10px;
-    }
-    .modalHeader h3{ margin:0; font-size: 16px; letter-spacing:-.2px; }
-    .xBtn{
-      border:0;
+    /* Small loading shimmer */
+    .loadingLine{
+      height: 12px;
+      border-radius: 999px;
       background: rgba(255,255,255,.10);
-      color: rgba(255,255,255,.9);
-      border: 1px solid rgba(255,255,255,.16);
-      width: 34px; height:34px;
-      border-radius: 12px;
-      cursor:pointer;
+      overflow:hidden;
+      position:relative;
     }
-    .modalBody{ padding: 0 16px 16px; }
-    .summary{
-      padding: 12px 12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.14);
-      margin-bottom: 12px;
+    .loadingLine::after{
+      content:"";
+      position:absolute; inset:0;
+      transform: translateX(-60%);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+      animation: shimmer 1.2s ease-in-out infinite;
     }
-    .summary .row{
-      display:flex;
-      justify-content:space-between;
-      gap: 12px;
-      margin: 6px 0;
-      color: rgba(255,255,255,.86);
-      font-size: 13.5px;
-    }
-    .summary .row span:last-child{ color: rgba(255,255,255,.92); font-weight:1000; }
-    .payNote{
-      margin-top: 10px;
-      color: rgba(255,255,255,.60);
-      font-size: 12px;
-      line-height:1.35;
+    @keyframes shimmer{
+      0%{ transform: translateX(-60%); }
+      100%{ transform: translateX(60%); }
     }
   </style>
 </head>
@@ -598,67 +529,43 @@
   <div class="wrap">
     <div class="shell">
 
-      <!-- LEFT -->
+      <!-- LEFT (masqué sur mobile) -->
       <section class="panel left">
         <div class="badge">
           <span class="dot"></span>
           <span>Service premium</span>
         </div>
 
-        <div class="brand"><span class="logoDot"></span>Travel Here</div>
-        <p class="brandSub">
-          Remplis le formulaire, confirme ton paiement, et tu reçois ton Top 3 (vols + hôtels + activités) immédiatement.
+        <h1 style="margin-top:10px;"><span class="logoDot"></span>Travel Here</h1>
+        <p style="margin:0;color:var(--muted);line-height:1.55;">
+          Remplis le formulaire, et reçois ton Top 3 (vols + hôtels + activités) immédiatement après paiement.
         </p>
 
-        <h1>Ton voyage, prêt en quelques minutes ✈️</h1>
-        <p class="sub">
-          Mobile-first, simple, premium. On te génère une proposition adaptée à ton budget et tes envies.
-        </p>
-
-        <div class="priceRow">
-          <div>
-            <b>Offre Premium — Top 3 complet</b><br/>
-            <span style="color:var(--muted2); font-size:12.5px;">Livraison immédiate après paiement</span>
-          </div>
-          <div class="priceTag">9,90€</div>
-        </div>
-
-        <div class="instant">
-          <span>⚡ Livraison immédiate</span>
-          <span>🔒 Paiement sécurisé</span>
-          <span>📩 Envoi par email</span>
-        </div>
-
-        <div class="stepsLeft">
-          <div class="stepCard">
-            <div class="num">1</div>
-            <div><b>Voyage</b><p>Villes + dates</p></div>
-          </div>
-          <div class="stepCard">
-            <div class="num">2</div>
-            <div><b>Préférences</b><p>Budget + style</p></div>
-          </div>
-          <div class="stepCard">
-            <div class="num">3</div>
-            <div><b>Finalisation</b><p>Email + note</p></div>
-          </div>
-          <div class="stepCard">
-            <div class="num">✓</div>
-            <div><b>Réception</b><p>Immédiate</p></div>
-          </div>
+        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="badge" style="background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);"><span style="opacity:.92;">⚡ Immédiat</span></span>
+          <span class="badge" style="background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);"><span style="opacity:.92;">📱 Mobile-first</span></span>
+          <span class="badge" style="background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);"><span style="opacity:.92;">✨ Premium</span></span>
         </div>
 
         <p class="fine" style="margin-top:14px;">
-          Travel Here — pensé pour une expérience mobile premium.
+          Travel Here — expérience pensée pour convertir depuis TikTok.
         </p>
       </section>
 
       <!-- RIGHT -->
       <aside class="panel right">
+        <!-- Mini header sur mobile -->
+        <div class="brandRowMini">
+          <div class="brandMini"><span class="logoDot"></span><span>Travel Here</span></div>
+          <div class="badge" style="background: rgba(96,165,250,.16); border-color: rgba(96,165,250,.26);">
+            <span class="dot"></span><span>Premium</span>
+          </div>
+        </div>
+
         <div class="topLine">
           <div>
             <h2>Formulaire</h2>
-            <div class="hint">3 étapes • livraison immédiate après paiement ✅</div>
+            <div class="hint">3 étapes • résultat affiché à la fin ✅</div>
           </div>
           <div class="badge" style="background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18);">
             <span style="opacity:.92">~ 45s</span>
@@ -674,19 +581,19 @@
           <div class="bar"><div id="progressBar"></div></div>
         </div>
 
-        <form id="tripForm">
+        <form id="tripForm" novalidate>
           <!-- STEP 1 -->
           <div class="step" data-step="1">
             <div class="grid2">
               <div class="field">
                 <label for="origin">Ville de départ</label>
-                <input id="origin" name="origin" placeholder="Tape une ville (toutes disponibles)..." autocomplete="off" />
+                <input id="origin" name="origin" placeholder="Tape une ville..." autocomplete="off" />
                 <div class="suggest" id="originSuggest"></div>
               </div>
 
               <div class="field">
                 <label for="destination">Destination</label>
-                <input id="destination" name="destination" placeholder="Tape une ville (toutes disponibles)..." autocomplete="off" required />
+                <input id="destination" name="destination" placeholder="Tape une ville..." autocomplete="off" required />
                 <div class="suggest" id="destSuggest"></div>
               </div>
             </div>
@@ -695,7 +602,7 @@
               <div class="field">
                 <label for="checkInDate">Date d’arrivée</label>
                 <input id="checkInDate" name="checkInDate" class="dateInput" placeholder="Choisir une date" autocomplete="off" required />
-                <svg class="calIcon" viewBox="0 0 24 24" fill="none">
+                <svg class="calIcon" id="calIconIn" viewBox="0 0 24 24" fill="none" aria-label="Ouvrir calendrier arrivée" role="button">
                   <path d="M7 2v3M17 2v3M3.5 9h17" stroke="white" stroke-opacity=".9" stroke-width="1.6" stroke-linecap="round"/>
                   <path d="M6 6h12a2.5 2.5 0 0 1 2.5 2.5V19A2.5 2.5 0 0 1 18 21.5H6A2.5 2.5 0 0 1 3.5 19V8.5A2.5 2.5 0 0 1 6 6Z" stroke="white" stroke-opacity=".9" stroke-width="1.6"/>
                 </svg>
@@ -703,14 +610,12 @@
               <div class="field">
                 <label for="checkOutDate">Date de départ</label>
                 <input id="checkOutDate" name="checkOutDate" class="dateInput" placeholder="Choisir une date" autocomplete="off" required />
-                <svg class="calIcon" viewBox="0 0 24 24" fill="none">
+                <svg class="calIcon" id="calIconOut" viewBox="0 0 24 24" fill="none" aria-label="Ouvrir calendrier départ" role="button">
                   <path d="M7 2v3M17 2v3M3.5 9h17" stroke="white" stroke-opacity=".9" stroke-width="1.6" stroke-linecap="round"/>
                   <path d="M6 6h12a2.5 2.5 0 0 1 2.5 2.5V19A2.5 2.5 0 0 1 18 21.5H6A2.5 2.5 0 0 1 3.5 19V8.5A2.5 2.5 0 0 1 6 6Z" stroke="white" stroke-opacity=".9" stroke-width="1.6"/>
                 </svg>
               </div>
             </div>
-
-            <p class="fine">Astuce : sur mobile, le sélecteur de dates natif s’ouvre automatiquement.</p>
           </div>
 
           <!-- STEP 2 -->
@@ -754,7 +659,11 @@
                 <span class="chip" data-value="culture">Culture</span>
                 <span class="chip" data-value="food">Food</span>
                 <span class="chip" data-value="nature">Nature</span>
-                <span class="chip" data-value="nightlife">Sorties</span>
+                <span class="chip" data-value="festivities">Festivités</span>
+                <span class="chip" data-value="romance">Romantique</span>
+                <span class="chip" data-value="family">Famille</span>
+                <span class="chip" data-value="adventure">Aventure</span>
+                <span class="chip" data-value="beach">Plage</span>
                 <span class="chip" data-value="shopping">Shopping</span>
                 <span class="chip" data-value="relax">Détente</span>
               </div>
@@ -765,13 +674,12 @@
           <!-- STEP 3 -->
           <div class="step" data-step="3" style="display:none">
             <div class="field">
-              <label for="email">Ton email</label>
-              <input id="email" name="email" type="email" placeholder="ex: toi@gmail.com" required />
-            </div>
-
-            <div class="field">
               <label for="notes">Notes (optionnel)</label>
-              <textarea id="notes" name="notes" placeholder="Ex : hôtel proche centre, départ le matin, pas trop de marche…"></textarea>
+              <textarea id="notes" name="notes" maxlength="300" placeholder="Ex : hôtel proche centre, départ le matin, pas trop de marche…"></textarea>
+              <div class="counterRow">
+                <span>Max 300 caractères</span>
+                <span id="notesCount">0/300</span>
+              </div>
             </div>
 
             <div class="field">
@@ -783,7 +691,14 @@
                 <div class="row"><span>Style</span><span>—</span></div>
                 <div class="row"><span>Budget</span><span>—</span></div>
               </div>
-              <p class="fine">Après paiement confirmé, tu reçois ton email immédiatement.</p>
+            </div>
+
+            <!-- Résultat affiché à la fin -->
+            <div class="field" id="resultWrap" style="display:none;">
+              <label>Ton résultat</label>
+              <div class="cards" id="resultCards"></div>
+              <div class="divider"></div>
+              <div class="muted">Si tu veux, tu peux ensuite brancher l’envoi par email via n8n (optionnel).</div>
             </div>
           </div>
 
@@ -793,9 +708,7 @@
             <button type="button" class="btn" id="nextBtn" style="flex:2;">Continuer</button>
           </div>
 
-          <p class="fine">
-            Travel Here — service livré immédiatement après paiement.
-          </p>
+          <p class="fine">Travel Here — expérience mobile premium.</p>
         </form>
       </aside>
 
@@ -817,32 +730,6 @@
           <div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div><div>D</div>
         </div>
         <div class="dpDays" id="dpDays"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Paywall Modal (optionnel, non configuré) -->
-  <div class="modalBackdrop" id="paywall">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Paiement premium">
-      <div class="modalHeader">
-        <div>
-          <h3>Paiement — Travel Here</h3>
-          <div class="hint" style="margin-top:4px">Livraison immédiate après paiement</div>
-        </div>
-        <button class="xBtn" id="closePaywall" aria-label="Fermer">✕</button>
-      </div>
-
-      <div class="modalBody">
-        <div class="summary" id="summaryBox">
-          <div class="row"><span>Produit</span><span>Top 3 Travel Here</span></div>
-          <div class="row"><span>Prix</span><span>9,90€</span></div>
-          <div class="row"><span>Livraison</span><span>Immédiate</span></div>
-        </div>
-
-        <button class="btn" id="payBtn" type="button">Payer maintenant</button>
-        <div class="payNote">
-          (Démo) Paiement réel non configuré. On le branchera à Stripe/Apple Pay ensuite.
-        </div>
       </div>
     </div>
   </div>
@@ -870,6 +757,16 @@
       const on = [...chips.querySelectorAll('.chip[data-on="1"]')].map(el => el.dataset.value);
       interestsInput.value = on.join(',');
     });
+
+    // ======== Notes max + counter ========
+    const notesEl = document.getElementById('notes');
+    const notesCount = document.getElementById('notesCount');
+    function updateNotesCount(){
+      const len = (notesEl.value || "").length;
+      notesCount.textContent = `${len}/300`;
+    }
+    notesEl.addEventListener('input', updateNotesCount);
+    updateNotesCount();
 
     // ======== Cities autocomplete (ALL cities via OpenStreetMap Nominatim) ========
     async function fetchCitySuggestions(query){
@@ -1051,11 +948,13 @@
     dpBackdrop.addEventListener("click", (e) => { if(e.target === dpBackdrop) closeDatePicker(); });
 
     function isMobile(){
-      return window.matchMedia("(max-width: 768px)").matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      return window.matchMedia("(max-width: 900px)").matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
 
     const checkIn = document.getElementById("checkInDate");
     const checkOut = document.getElementById("checkOutDate");
+    const calIconIn = document.getElementById("calIconIn");
+    const calIconOut = document.getElementById("calIconOut");
 
     function enableDateUX(){
       if(isMobile()){
@@ -1063,17 +962,25 @@
         checkOut.type = "date";
         checkIn.placeholder = "";
         checkOut.placeholder = "";
+
+        // ✅ icône calendrier ouvre le natif (focus/click)
+        calIconIn.addEventListener("click", () => { checkIn.showPicker?.(); checkIn.focus(); checkIn.click(); });
+        calIconOut.addEventListener("click", () => { checkOut.showPicker?.(); checkOut.focus(); checkOut.click(); });
         return;
       }
+
       checkIn.type = "text";
       checkOut.type = "text";
       checkIn.addEventListener("click", () => openDatePicker(checkIn));
       checkOut.addEventListener("click", () => openDatePicker(checkOut));
       checkIn.addEventListener("keydown", (e) => e.preventDefault());
       checkOut.addEventListener("keydown", (e) => e.preventDefault());
+
+      // ✅ icône calendrier ouvre aussi
+      calIconIn.addEventListener("click", () => openDatePicker(checkIn));
+      calIconOut.addEventListener("click", () => openDatePicker(checkOut));
     }
     enableDateUX();
-    window.addEventListener("resize", () => enableDateUX());
 
     // ======== 3-step navigation + progress ========
     let currentStep = 1;
@@ -1090,7 +997,7 @@
       currentStep = n;
       steps.forEach(s => s.style.display = (Number(s.dataset.step) === n) ? "block" : "none");
       backBtn.style.display = (n === 1) ? "none" : "inline-flex";
-      nextBtn.textContent = (n === 3) ? "Continuer → Paiement" : "Continuer";
+      nextBtn.textContent = (n === 3) ? "Afficher mon résultat" : "Continuer";
       stepLabel.textContent = `Étape ${n}/3`;
       stepHint.textContent = hints[n] || "";
       progressBar.style.width = (n === 1 ? "33%" : n === 2 ? "66%" : "100%");
@@ -1115,19 +1022,14 @@
       return true;
     }
 
-    function requiredOkForStep3(){
-      const email = document.getElementById('email')?.value?.trim();
-      return !!email;
-    }
-
     backBtn.addEventListener('click', () => {
       if(currentStep > 1) showStep(currentStep - 1);
     });
 
-    nextBtn.addEventListener('click', () => {
+    nextBtn.addEventListener('click', async () => {
       if(currentStep === 1){
         if(!requiredOkForStep1()){
-          alert("Remplis destination + dates (et vérifie que départ > arrivée).");
+          alert("Remplis destination + dates (et vérifie que la date de départ est après l’arrivée).");
           return;
         }
         showStep(2);
@@ -1138,11 +1040,9 @@
         return;
       }
       if(currentStep === 3){
-        if(!requiredOkForStep3()){
-          alert("Ajoute ton email pour recevoir le résultat.");
-          return;
-        }
-        openPaywall(); // démo
+        // ✅ Affiche un résultat "très beau" dans la page (démo UI).
+        // Ensuite tu pourras le brancher à n8n (webhook) pour un vrai résultat.
+        await showBeautifulResultDemo();
       }
     });
 
@@ -1184,27 +1084,64 @@
         .replace(/'/g, "&#039;");
     }
 
-    // ======== Paywall (démo) ========
-    const paywall = document.getElementById('paywall');
-    const closePaywall = document.getElementById('closePaywall');
-    const payBtn = document.getElementById('payBtn');
+    // ======== Beautiful result (DEMO) ========
+    async function showBeautifulResultDemo(){
+      const wrap = document.getElementById("resultWrap");
+      const cards = document.getElementById("resultCards");
+      wrap.style.display = "block";
 
-    function openPaywall(){
-      paywall.style.display = "flex";
-      document.body.style.overflow = "hidden";
-    }
-    function closePaywallFn(){
-      paywall.style.display = "none";
-      document.body.style.overflow = "";
-    }
-    closePaywall.addEventListener("click", closePaywallFn);
-    paywall.addEventListener("click", (e) => { if(e.target === paywall) closePaywallFn(); });
+      // loading UI
+      cards.innerHTML = `
+        <div class="card">
+          <h3>Préparation de ton Top 3 <span class="tag">en cours</span></h3>
+          <div class="loadingLine" style="margin-top:10px;"></div>
+          <div class="loadingLine" style="margin-top:10px;width:78%;"></div>
+          <div class="loadingLine" style="margin-top:10px;width:62%;"></div>
+          <div class="muted" style="margin-top:10px;">On sélectionne les meilleures options pour ton voyage…</div>
+        </div>
+      `;
+      nextBtn.disabled = true;
+      nextBtn.textContent = "Génération…";
 
-    payBtn.addEventListener("click", () => {
-      // Démo : pour l’instant on simule un paiement OK
-      closePaywallFn();
-      alert("Paiement non configuré (démo). Prochaine étape : brancher Stripe/Apple Pay + envoyer vers n8n.");
-    });
+      // simulate loading
+      await new Promise(r => setTimeout(r, 900));
+
+      const dest = document.getElementById('destination')?.value?.trim() || "Ta destination";
+      const inD = document.getElementById('checkInDate')?.value?.trim() || "—";
+      const outD = document.getElementById('checkOutDate')?.value?.trim() || "—";
+
+      // Demo results (à remplacer par réponse n8n)
+      cards.innerHTML = `
+        <div class="card">
+          <h3>Top 3 Vols <span class="tag">optimisé</span></h3>
+          <div class="muted">1) Vol direct • matin • prix indicatif : <b>—</b></div>
+          <div class="muted">2) 1 escale courte • meilleur rapport qualité/prix : <b>—</b></div>
+          <div class="muted">3) Option flexible • retour confortable : <b>—</b></div>
+        </div>
+
+        <div class="card">
+          <h3>Top 3 Hôtels <span class="tag">bien placés</span></h3>
+          <div class="muted">1) Centre-ville • note élevée • prix : <b>prix indispo</b></div>
+          <div class="muted">2) Quartier premium • bon confort • prix : <b>prix indispo</b></div>
+          <div class="muted">3) Bon budget • propre • prix : <b>prix indispo</b></div>
+        </div>
+
+        <div class="card">
+          <h3>Top 3 Activités <span class="tag">à faire</span></h3>
+          <div class="muted">1) Incontournable local • durée : <b>—</b></div>
+          <div class="muted">2) Expérience premium • réservation conseillée</div>
+          <div class="muted">3) Spot photo + ambiance • parfait pour ${escapeHtml(dest)}</div>
+        </div>
+
+        <div class="card">
+          <h3>Résumé <span class="tag">${escapeHtml(inD)} → ${escapeHtml(outD)}</span></h3>
+          <div class="muted">Ton Top 3 s’affiche ici en démo. La prochaine étape est de brancher ce bloc aux résultats réels (n8n) pour afficher les vrais prix et liens.</div>
+        </div>
+      `;
+
+      nextBtn.disabled = false;
+      nextBtn.textContent = "Relancer / Modifier";
+    }
 
     // live recap updates
     ["destination","checkInDate","checkOutDate","adults","children","budget","style"].forEach(id => {
@@ -1214,6 +1151,7 @@
     });
 
     showStep(1);
+    updateRecap();
   </script>
 </body>
 </html>
