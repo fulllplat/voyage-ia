@@ -712,35 +712,131 @@
     // IMPORTANT: webhook-test = marche quand ton workflow n8n est en mode test (Execute). Pour public -> webhook (prod).
 
     // ===========================
+    // MINI "BASE" AÉROPORTS + CONVERSION INSTANTANÉE
+    // - Si l'utilisateur choisit une suggestion, on garde lat/lon dans dataset => conversion instant
+    // - Sinon fallback : géocode (1 call) puis nearest airport
+    // ===========================
+
+    // Base mini mais solide (Europe + grandes villes monde)
+    const AIRPORTS_DB = [
+      // France
+      {iata:"CDG",lat:49.0097,lon:2.5479},{iata:"ORY",lat:48.7262,lon:2.3652},{iata:"BVA",lat:49.4544,lon:2.1128},
+      {iata:"LYS",lat:45.7256,lon:5.0811},{iata:"MRS",lat:43.4393,lon:5.2214},{iata:"NCE",lat:43.6653,lon:7.2150},
+      {iata:"TLS",lat:43.6293,lon:1.3633},{iata:"BOD",lat:44.8283,lon:-0.7156},{iata:"NTE",lat:47.1532,lon:-1.6107},
+      {iata:"LIL",lat:50.5633,lon:3.0869},{iata:"SXB",lat:48.5383,lon:7.6282},{iata:"MLH",lat:47.59,lon:7.5292},
+      {iata:"MPL",lat:43.5762,lon:3.9630},{iata:"RNS",lat:48.0695,lon:-1.7348},{iata:"SVO",lat:55.9726,lon:37.4146}, // (pas France, ignore - ancien, mais ok)
+      // Espagne / Portugal
+      {iata:"MAD",lat:40.4722,lon:-3.5608},{iata:"BCN",lat:41.2974,lon:2.0833},{iata:"AGP",lat:36.6749,lon:-4.4991},
+      {iata:"VLC",lat:39.4893,lon:-0.4816},{iata:"SVQ",lat:37.4180,lon:-5.8931},{iata:"BIO",lat:43.3011,lon:-2.9106},
+      {iata:"PMI",lat:39.5517,lon:2.7388},{iata:"IBZ",lat:38.8729,lon:1.3731},{iata:"LPA",lat:27.9319,lon:-15.3866},
+      {iata:"TFS",lat:28.0445,lon:-16.5725},{iata:"ALC",lat:38.2822,lon:-0.5582},
+      {iata:"LIS",lat:38.7742,lon:-9.1342},{iata:"OPO",lat:41.2481,lon:-8.6814},{iata:"FAO",lat:37.0144,lon:-7.9659},
+      // UK / Ireland
+      {iata:"LHR",lat:51.4700,lon:-0.4543},{iata:"LGW",lat:51.1537,lon:-0.1821},{iata:"STN",lat:51.8850,lon:0.2350},
+      {iata:"MAN",lat:53.3537,lon:-2.2749},{iata:"EDI",lat:55.9500,lon:-3.3725},{iata:"DUB",lat:53.4213,lon:-6.2701},
+      // Italie
+      {iata:"FCO",lat:41.8003,lon:12.2389},{iata:"CIA",lat:41.7994,lon:12.5949},{iata:"MXP",lat:45.6306,lon:8.7281},
+      {iata:"LIN",lat:45.4451,lon:9.2767},{iata:"VCE",lat:45.5053,lon:12.3519},{iata:"NAP",lat:40.8860,lon:14.2908},
+      {iata:"CTA",lat:37.4668,lon:15.0664},{iata:"BLQ",lat:44.5354,lon:11.2887},
+      // Allemagne / Suisse / Autriche / Benelux
+      {iata:"BER",lat:52.3667,lon:13.5033},{iata:"FRA",lat:50.0379,lon:8.5622},{iata:"MUC",lat:48.3538,lon:11.7861},
+      {iata:"HAM",lat:53.6304,lon:9.9882},{iata:"DUS",lat:51.2895,lon:6.7668},
+      {iata:"ZRH",lat:47.4581,lon:8.5555},{iata:"GVA",lat:46.2381,lon:6.1090},{iata:"BSL",lat:47.59,lon:7.5292},
+      {iata:"VIE",lat:48.1103,lon:16.5697},
+      {iata:"AMS",lat:52.3105,lon:4.7683},{iata:"BRU",lat:50.9010,lon:4.4844},{iata:"LUX",lat:49.6233,lon:6.2044},
+      // Europe centrale / Nordiques / Balkans
+      {iata:"PRG",lat:50.1008,lon:14.26},{iata:"WAW",lat:52.1657,lon:20.9671},{iata:"BUD",lat:47.4369,lon:19.2556},
+      {iata:"CPH",lat:55.6180,lon:12.6508},{iata:"ARN",lat:59.6519,lon:17.9186},{iata:"OSL",lat:60.1939,lon:11.1004},
+      {iata:"HEL",lat:60.3172,lon:24.9633},{iata:"KEF",lat:63.9850,lon:-22.6056},
+      {iata:"ATH",lat:37.9364,lon:23.9445},{iata:"SKG",lat:40.5197,lon:22.9709},
+      {iata:"IST",lat:41.2753,lon:28.7519},{iata:"SAW",lat:40.8986,lon:29.3092},
+      {iata:"OTP",lat:44.5711,lon:26.0850},{iata:"SOF",lat:42.6967,lon:23.4114},{iata:"BEG",lat:44.8193,lon:20.3069},
+      {iata:"ZAG",lat:45.7429,lon:16.0688},{iata:"DBV",lat:42.5614,lon:18.2682},
+      // Monde (grandes plaques)
+      {iata:"DXB",lat:25.2532,lon:55.3657},{iata:"DOH",lat:25.2731,lon:51.6081},{iata:"AUH",lat:24.4330,lon:54.6511},
+      {iata:"JFK",lat:40.6413,lon:-73.7781},{iata:"EWR",lat:40.6895,lon:-74.1745},{iata:"LAX",lat:33.9416,lon:-118.4085},
+      {iata:"SFO",lat:37.6213,lon:-122.3790},{iata:"MIA",lat:25.7959,lon:-80.2870},{iata:"ORD",lat:41.9742,lon:-87.9073},
+      {iata:"YYZ",lat:43.6777,lon:-79.6248},{iata:"YUL",lat:45.4706,lon:-73.7408},{iata:"YVR",lat:49.1967,lon:-123.1815},
+      {iata:"GRU",lat:-23.4356,lon:-46.4731},{iata:"GIG",lat:-22.8099,lon:-43.2506},
+      {iata:"EZE",lat:-34.8222,lon:-58.5358},
+      {iata:"CAI",lat:30.1120,lon:31.4000},{iata:"CMN",lat:33.3675,lon:-7.5898},{iata:"TUN",lat:36.8510,lon:10.2272},
+      {iata:"JNB",lat:-26.1367,lon:28.2410},
+      {iata:"HND",lat:35.5494,lon:139.7798},{iata:"NRT",lat:35.7720,lon:140.3929},{iata:"ICN",lat:37.4602,lon:126.4407},
+      {iata:"SIN",lat:1.3644,lon:103.9915},{iata:"BKK",lat:13.6900,lon:100.7501},{iata:"HKG",lat:22.3080,lon:113.9185},
+      {iata:"SYD",lat:-33.9399,lon:151.1753},{iata:"MEL",lat:-37.6733,lon:144.8430}
+    ];
+
+    function haversine(lat1, lon1, lat2, lon2){
+      const R = 6371;
+      const toRad = (d) => (d * Math.PI) / 180;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(a));
+    }
+
+    function findNearestAirport(lat, lon){
+      let best = null;
+      let bestDist = Infinity;
+      for(const a of AIRPORTS_DB){
+        const d = haversine(lat, lon, a.lat, a.lon);
+        if(d < bestDist){
+          bestDist = d;
+          best = a;
+        }
+      }
+      return best;
+    }
+
+    async function geocodeCity(city){
+      const q = (city || "").trim();
+      if(q.length < 2) return null;
+      const url = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&accept-language=fr&q=" + encodeURIComponent(q);
+      const res = await fetch(url, { headers: { "Accept": "application/json" } });
+      if(!res.ok) return null;
+      const data = await res.json();
+      if(!data || !data[0]) return null;
+      return { lat: Number(data[0].lat), lon: Number(data[0].lon) };
+    }
+
+    function isIata3(s){
+      return /^[A-Za-z]{3}$/.test((s||"").trim());
+    }
+
+    // ===========================
     // Fast autocomplete (priorité + cache + debounce + abort)
+    // + on stocke lat/lon dans la suggestion => conversion instant
     // ===========================
     const POPULAR_CITIES = [
-      { label: "Paris — France", value: "Paris" },
-      { label: "Lyon — France", value: "Lyon" },
-      { label: "Marseille — France", value: "Marseille" },
-      { label: "Nice — France", value: "Nice" },
-      { label: "Toulouse — France", value: "Toulouse" },
-      { label: "Bordeaux — France", value: "Bordeaux" },
-      { label: "Nantes — France", value: "Nantes" },
-      { label: "Lille — France", value: "Lille" },
-      { label: "Bruxelles — Belgique", value: "Bruxelles" },
-      { label: "Genève — Suisse", value: "Genève" },
-      { label: "Londres — Royaume-Uni", value: "Londres" },
-      { label: "Barcelone — Espagne", value: "Barcelone" },
-      { label: "Madrid — Espagne", value: "Madrid" },
-      { label: "Lisbonne — Portugal", value: "Lisbonne" },
-      { label: "Rome — Italie", value: "Rome" },
-      { label: "Milan — Italie", value: "Milan" },
-      { label: "Berlin — Allemagne", value: "Berlin" },
-      { label: "Amsterdam — Pays-Bas", value: "Amsterdam" },
-      { label: "Prague — République tchèque", value: "Prague" },
-      { label: "Athènes — Grèce", value: "Athènes" },
-      { label: "Istanbul — Turquie", value: "Istanbul" },
-      { label: "New York — USA", value: "New York" },
-      { label: "Montréal — Canada", value: "Montréal" },
-      { label: "Dubai — Émirats arabes unis", value: "Dubai" },
-      { label: "Bangkok — Thaïlande", value: "Bangkok" },
-      { label: "Tokyo — Japon", value: "Tokyo" }
+      // ajout lat/lon pour conversion instant (sans requête supplémentaire)
+      { label: "Paris — France", value: "Paris", lat: 48.8566, lon: 2.3522 },
+      { label: "Lyon — France", value: "Lyon", lat: 45.7640, lon: 4.8357 },
+      { label: "Marseille — France", value: "Marseille", lat: 43.2965, lon: 5.3698 },
+      { label: "Nice — France", value: "Nice", lat: 43.7102, lon: 7.2620 },
+      { label: "Toulouse — France", value: "Toulouse", lat: 43.6047, lon: 1.4442 },
+      { label: "Bordeaux — France", value: "Bordeaux", lat: 44.8378, lon: -0.5792 },
+      { label: "Nantes — France", value: "Nantes", lat: 47.2184, lon: -1.5536 },
+      { label: "Lille — France", value: "Lille", lat: 50.6292, lon: 3.0573 },
+      { label: "Bruxelles — Belgique", value: "Bruxelles", lat: 50.8503, lon: 4.3517 },
+      { label: "Genève — Suisse", value: "Genève", lat: 46.2044, lon: 6.1432 },
+      { label: "Londres — Royaume-Uni", value: "Londres", lat: 51.5072, lon: -0.1276 },
+      { label: "Barcelone — Espagne", value: "Barcelone", lat: 41.3851, lon: 2.1734 },
+      { label: "Madrid — Espagne", value: "Madrid", lat: 40.4168, lon: -3.7038 },
+      { label: "Lisbonne — Portugal", value: "Lisbonne", lat: 38.7223, lon: -9.1393 },
+      { label: "Rome — Italie", value: "Rome", lat: 41.9028, lon: 12.4964 },
+      { label: "Milan — Italie", value: "Milan", lat: 45.4642, lon: 9.1900 },
+      { label: "Berlin — Allemagne", value: "Berlin", lat: 52.5200, lon: 13.4050 },
+      { label: "Amsterdam — Pays-Bas", value: "Amsterdam", lat: 52.3676, lon: 4.9041 },
+      { label: "Prague — République tchèque", value: "Prague", lat: 50.0755, lon: 14.4378 },
+      { label: "Athènes — Grèce", value: "Athènes", lat: 37.9838, lon: 23.7275 },
+      { label: "Istanbul — Turquie", value: "Istanbul", lat: 41.0082, lon: 28.9784 },
+      { label: "New York — USA", value: "New York", lat: 40.7128, lon: -74.0060 },
+      { label: "Montréal — Canada", value: "Montréal", lat: 45.5019, lon: -73.5674 },
+      { label: "Dubai — Émirats arabes unis", value: "Dubai", lat: 25.2048, lon: 55.2708 },
+      { label: "Bangkok — Thaïlande", value: "Bangkok", lat: 13.7563, lon: 100.5018 },
+      { label: "Tokyo — Japon", value: "Tokyo", lat: 35.6762, lon: 139.6503 }
     ];
 
     const cityCache = new Map();
@@ -768,7 +864,13 @@
       const items = data.map(item => {
         const city = item.address?.city || item.address?.town || item.address?.village || item.address?.municipality || item.display_name?.split(",")[0] || "";
         const country = item.address?.country || "";
-        return { label: city ? `${city} — ${country}` : item.display_name, value: city ? `${city}` : item.display_name };
+        const lat = item.lat != null ? Number(item.lat) : null;
+        const lon = item.lon != null ? Number(item.lon) : null;
+        return {
+          label: city ? `${city} — ${country}` : item.display_name,
+          value: city ? `${city}` : item.display_name,
+          lat, lon
+        };
       }).filter(x => x.value);
 
       cityCache.set(key, items);
@@ -796,13 +898,24 @@
       function render(items){
         if(!items || items.length === 0){ hide(); return; }
         box.innerHTML = items.map(it => `
-          <button type="button" data-value="${esc(it.value)}"><div>${esc(it.label)}</div></button>
+          <button
+            type="button"
+            data-value="${esc(it.value)}"
+            data-lat="${(it.lat ?? "")}"
+            data-lon="${(it.lon ?? "")}"
+          ><div>${esc(it.label)}</div></button>
         `).join("");
         box.style.display = "block";
       }
 
+      function clearGeo(){
+        delete input.dataset.lat;
+        delete input.dataset.lon;
+      }
+
       function handleInput(){
         const q = input.value || "";
+        clearGeo();
 
         const local = fastLocalSuggest(q);
         render(local);
@@ -843,6 +956,15 @@
         const btn = e.target.closest("button");
         if(!btn) return;
         input.value = btn.dataset.value;
+        const lat = btn.dataset.lat;
+        const lon = btn.dataset.lon;
+        if(lat && lon){
+          input.dataset.lat = String(lat);
+          input.dataset.lon = String(lon);
+        }else{
+          delete input.dataset.lat;
+          delete input.dataset.lon;
+        }
         hide();
         input.dispatchEvent(new Event("change"));
       });
@@ -1049,8 +1171,6 @@
 
     // ===========================
     // RESULTS: Top3 packs (vol + hôtel + activité) depuis n8n
-    // Format attendu (idéal):
-    // { top3: [ { label, meta:[], flight:{title,line,price}, hotel:{title,line,price}, activity:{title,line,price} }, ... ] }
     // ===========================
     const notesWrap = document.getElementById("notesWrap");
     const resultHero = document.getElementById("resultHero");
@@ -1058,10 +1178,45 @@
     const loadingBlock = document.getElementById("loadingBlock");
     const rankGrid = document.getElementById("rankGrid");
 
-    function getFormData(){
+    // ==> MODIF : async + conversion ville -> IATA
+    async function getFormData(){
+      const originEl = document.getElementById("origin");
+      const destEl = document.getElementById("destination");
+
+      const originRaw = originEl?.value?.trim() || "";
+      const destRaw = destEl?.value?.trim() || "";
+
+      async function toIataOrKeep(raw, el){
+        if(!raw) return { value: "", used: "empty", geo: null, airport: null };
+        if(isIata3(raw)) return { value: raw.toUpperCase(), used: "iata_direct", geo: null, airport: null };
+
+        // 1) instant si lat/lon déjà connus (choix suggestion)
+        const lat0 = el?.dataset?.lat ? Number(el.dataset.lat) : null;
+        const lon0 = el?.dataset?.lon ? Number(el.dataset.lon) : null;
+        if(Number.isFinite(lat0) && Number.isFinite(lon0)){
+          const ap = findNearestAirport(lat0, lon0);
+          return { value: ap?.iata || raw, used: ap?.iata ? "nearest_from_suggest" : "no_airport_from_suggest", geo: {lat:lat0, lon:lon0}, airport: ap || null };
+        }
+
+        // 2) fallback : géocodage (1 call)
+        const geo = await geocodeCity(raw);
+        if(!geo) return { value: raw, used: "geocode_failed_keep_raw", geo: null, airport: null };
+        const ap = findNearestAirport(geo.lat, geo.lon);
+        return { value: ap?.iata || raw, used: ap?.iata ? "nearest_from_geocode" : "no_airport_from_geocode", geo, airport: ap || null };
+      }
+
+      const originConv = await toIataOrKeep(originRaw, originEl);
+      const destConv = await toIataOrKeep(destRaw, destEl);
+
       return {
-        origin: document.getElementById("origin")?.value?.trim() || "",
-        destination: document.getElementById("destination")?.value?.trim() || "",
+        // ce que n8n recevra :
+        origin: originConv.value,
+        destination: destConv.value,
+
+        // bonus debug (tu peux les enlever plus tard)
+        origin_meta: originConv,
+        destination_meta: destConv,
+
         checkInDate: document.getElementById("checkInDate")?.value?.trim() || "",
         checkOutDate: document.getElementById("checkOutDate")?.value?.trim() || "",
         adults: Number(document.getElementById("adults")?.value || 2),
@@ -1121,7 +1276,8 @@
     }
 
     async function showTop3TripletsFromN8N(){
-      const payload = getFormData();
+      // ==> MODIF : await getFormData() (car conversion IATA peut être async)
+      const payload = await getFormData();
 
       // UI: results only
       notesWrap.style.display = "none";
@@ -1154,6 +1310,9 @@
               <div style="font-weight:1000;">Aucun Top 3 reçu</div>
               <div class="mini" style="margin-top:6px;">
                 Ton webhook a répondu, mais il n’a pas renvoyé <b>top3</b>.
+              </div>
+              <div class="mini" style="margin-top:8px;opacity:.85;">
+                Codes envoyés : <b>${esc(payload.origin || "—")}</b> → <b>${esc(payload.destination || "—")}</b>
               </div>
             </div>
           `;
