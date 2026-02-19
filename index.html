@@ -4,23 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Travel Here — Formulaire</title>
-  <meta name="description" content="Travel Here : formulaire premium pour générer une offre de voyage (vol + hôtel + activité) en Top 3." />
+  <meta name="description" content="Travel Here : Top 3 (pack vol + hôtel + activité) en affichage premium." />
 
   <style>
     :root{
       --text: rgba(255,255,255,.94);
       --muted: rgba(255,255,255,.74);
       --muted2: rgba(255,255,255,.58);
-
       --stroke: rgba(255,255,255,.20);
       --accent: #60A5FA;
       --accent2:#34D399;
-
       --shadow: 0 22px 64px rgba(0,0,0,.45);
       --r: 18px;
       --r2: 14px;
     }
-
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -31,7 +28,7 @@
       overflow-x:hidden;
     }
 
-    /* ======= Background slideshow ======= */
+    /* Background slideshow */
     .bg{ position:fixed; inset:0; z-index:-3; background:#050711; }
     .bg .slide{
       position:absolute; inset:0;
@@ -76,23 +73,15 @@
       100%{transform:translate3d(-80px,60px,0)}
     }
 
-    /* ======= Layout ======= */
+    /* Layout */
     .wrap{
       min-height:100%;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 10px 10px;
+      padding: 10px;
     }
-
-    .shell{
-      width: min(980px, 100%);
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      align-items: start;
-    }
-
+    .shell{ width: min(980px, 100%); display:grid; grid-template-columns: 1fr; }
     .panel{
       border-radius: var(--r);
       background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.10));
@@ -100,24 +89,17 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(14px);
       overflow:hidden;
-      position:relative;
     }
-
     .right{ padding: 14px 12px; }
 
-    /* Mini header */
-    .brandRowMini{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
+    /* Header */
+    .brandRow{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
       margin-bottom: 10px;
     }
-    .brandMini{
+    .brand{
       display:flex; align-items:center; gap:10px;
-      font-weight: 1000;
-      letter-spacing:-.8px;
-      font-size: 18px;
+      font-weight: 1000; letter-spacing:-.8px; font-size: 18px;
     }
     .logoDot{
       width:10px; height:10px; border-radius:50%;
@@ -126,18 +108,13 @@
       display:inline-block;
     }
     .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding: 8px 12px;
-      border-radius: 999px;
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 8px 12px; border-radius: 999px;
       background: rgba(96,165,250,.16);
       border: 1px solid rgba(96,165,250,.26);
       color: rgba(255,255,255,.92);
-      font-size: 13px;
-      letter-spacing:.2px;
-      user-select:none;
-      white-space:nowrap;
+      font-size: 13px; letter-spacing:.2px;
+      user-select:none; white-space:nowrap;
     }
     .dot{
       width:8px; height:8px; border-radius:50%;
@@ -157,19 +134,40 @@
     .topLine h2{ margin:0; font-size: 16px; letter-spacing:-.2px; }
     .hint{ margin-top:2px; color: var(--muted2); font-size: 12.5px; }
 
-    form{ display:grid; gap: 12px; margin-top: 10px; }
+    /* Progress */
+    .progressWrap{
+      margin: 10px 0 10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .progressTop{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      color: rgba(255,255,255,.76); font-size: 12px;
+    }
+    .bar{
+      height: 8px; border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      margin-top: 8px; overflow:hidden;
+    }
+    .bar > div{
+      height:100%; width:33%;
+      border-radius:999px;
+      background: linear-gradient(135deg, rgba(96,165,250,1), rgba(52,211,153,.95));
+      transition: width .25s ease;
+    }
 
+    /* Form */
+    form{ display:grid; gap: 12px; margin-top: 10px; }
     .grid2{ display:grid; gap: 12px; grid-template-columns: 1fr 1fr; }
     @media (max-width: 680px){ .grid2{grid-template-columns:1fr;} }
-
     label{
-      display:block;
-      font-size: 12.5px;
+      display:block; font-size: 12.5px;
       color: rgba(255,255,255,.82);
       margin-bottom: 6px;
     }
     .field{position:relative;}
-
     input, textarea{
       width:100%;
       padding: 12px 12px;
@@ -182,7 +180,6 @@
       backdrop-filter: blur(10px);
       font-size: 16px; /* anti-zoom iPhone */
     }
-
     textarea{min-height: 110px; resize: vertical}
     input::placeholder, textarea::placeholder{color: rgba(255,255,255,.52)}
     input:focus, textarea:focus{
@@ -194,14 +191,9 @@
 
     .dateInput{ padding-right: 46px; cursor:pointer; }
     .calIcon{
-      position:absolute;
-      right: 10px;
-      top: 34px;
-      width: 22px;
-      height: 22px;
-      opacity:.92;
-      cursor:pointer;
-      pointer-events:auto;
+      position:absolute; right: 10px; top: 34px;
+      width: 22px; height: 22px; opacity:.92;
+      cursor:pointer; pointer-events:auto;
       filter: drop-shadow(0 6px 18px rgba(0,0,0,.25));
     }
 
@@ -239,6 +231,13 @@
     .chip:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
     .chip[data-on="1"]{ background: rgba(96,165,250,.18); border-color: rgba(96,165,250,.32); }
 
+    /* Notes counter */
+    .counterRow{
+      display:flex; justify-content:space-between; gap:10px;
+      margin-top:6px; color: rgba(255,255,255,.62);
+      font-size: 12px;
+    }
+
     /* Autocomplete dropdown */
     .suggest{
       position:absolute;
@@ -268,16 +267,13 @@
       transition: background .14s ease;
     }
     .suggest button:hover{ background: rgba(96,165,250,.14); }
-    .suggest .muted{ color: rgba(255,255,255,.60); font-size:12px; }
 
-    /* CTA */
+    /* Buttons */
     .btn{
-      border:0;
-      width:100%;
+      border:0; width:100%;
       padding: 12px 14px;
       border-radius: 14px;
-      font-weight: 1000;
-      letter-spacing:.2px;
+      font-weight: 1000; letter-spacing:.2px;
       color:white;
       background: linear-gradient(135deg, rgba(96,165,250,1), rgba(52,211,153,.95));
       box-shadow: 0 14px 38px rgba(0,0,0,.26);
@@ -287,7 +283,6 @@
     .btn:hover{transform: translateY(-1px); filter: brightness(1.03)}
     .btn:active{transform: translateY(0px); filter: brightness(.98)}
     .btn:disabled{ opacity:.65; cursor:not-allowed; transform:none; }
-
     .secondaryBtn{
       border: 1px solid rgba(255,255,255,.18);
       background: rgba(255,255,255,.10);
@@ -296,52 +291,10 @@
       border-radius: 14px;
       font-weight: 900;
       cursor:pointer;
-      transition: transform .16s ease, filter .16s ease;
       width:100%;
     }
 
-    /* Progress */
-    .progressWrap{
-      margin: 10px 0 10px;
-      padding: 10px 12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.14);
-    }
-    .progressTop{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      color: rgba(255,255,255,.76);
-      font-size: 12px;
-    }
-    .bar{
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.12);
-      margin-top: 8px;
-      overflow:hidden;
-    }
-    .bar > div{
-      height:100%;
-      width:33%;
-      border-radius:999px;
-      background: linear-gradient(135deg, rgba(96,165,250,1), rgba(52,211,153,.95));
-      transition: width .25s ease;
-    }
-
-    /* Notes counter */
-    .counterRow{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      margin-top:6px;
-      color: rgba(255,255,255,.62);
-      font-size: 12px;
-    }
-
-    /* ======= Custom Date Picker (desktop) ======= */
+    /* Desktop date picker */
     .dpBackdrop{
       position:fixed; inset:0;
       background: rgba(0,0,0,.55);
@@ -408,17 +361,24 @@
     .day.isToday{ border-color: rgba(52,211,153,.32); background: rgba(52,211,153,.10); }
     .day.isSelected{ border-color: rgba(96,165,250,.45); background: rgba(96,165,250,.22); }
 
-    /* ======= RESULTS (pétant) ======= */
+    /* RESULTS (super mis en avant) */
     .resultHero{
       margin-top: 10px;
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,.18);
       background:
-        radial-gradient(900px 380px at 10% 0%, rgba(96,165,250,.30), transparent 55%),
-        radial-gradient(900px 380px at 90% 0%, rgba(52,211,153,.22), transparent 55%),
+        radial-gradient(900px 380px at 10% 0%, rgba(96,165,250,.34), transparent 55%),
+        radial-gradient(900px 380px at 90% 0%, rgba(52,211,153,.26), transparent 55%),
         rgba(255,255,255,.08);
-      box-shadow: 0 24px 70px rgba(0,0,0,.45);
+      box-shadow: 0 28px 90px rgba(0,0,0,.55);
       overflow:hidden;
+      transform: translateY(10px) scale(.985);
+      opacity: 0;
+      transition: transform .45s ease, opacity .45s ease;
+    }
+    .resultHero.on{
+      transform: translateY(0) scale(1);
+      opacity: 1;
     }
     .resultHeroHead{
       padding: 14px 14px 10px;
@@ -449,17 +409,21 @@
       white-space:nowrap;
     }
 
-    .rankGrid{
-      padding: 12px 12px 14px;
-      display:grid;
-      gap: 10px;
-    }
+    .rankGrid{ padding: 12px; display:grid; gap: 10px; }
     .rankCard{
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.16);
       background: rgba(0,0,0,.16);
       overflow:hidden;
+      animation: popIn .35s ease both;
     }
+    .rankCard:nth-child(2){ animation-delay: .06s; }
+    .rankCard:nth-child(3){ animation-delay: .12s; }
+    @keyframes popIn{
+      from{ transform: translateY(8px); opacity:0; }
+      to{ transform: translateY(0); opacity:1; }
+    }
+
     .rankTop{
       padding: 10px 12px;
       display:flex;
@@ -478,13 +442,11 @@
       width: 26px; height:26px;
       border-radius: 10px;
       display:grid; place-items:center;
-      background: linear-gradient(135deg, rgba(96,165,250,.26), rgba(52,211,153,.18));
-      border: 1px solid rgba(255,255,255,.16);
+      background: linear-gradient(135deg, rgba(96,165,250,.30), rgba(52,211,153,.22));
+      border: 1px solid rgba(255,255,255,.18);
       font-weight: 1000;
     }
-    .rankMeta{
-      display:flex; gap: 8px; flex-wrap:wrap; justify-content:flex-end;
-    }
+    .rankMeta{ display:flex; gap: 8px; flex-wrap:wrap; justify-content:flex-end; }
     .metaTag{
       font-size: 11px;
       padding: 4px 8px;
@@ -495,17 +457,12 @@
       white-space:nowrap;
     }
 
-    .rankBody{
-      padding: 10px 12px 12px;
-      display:grid;
-      gap: 8px;
-    }
-
+    .rankBody{ padding: 10px 12px 12px; display:grid; gap: 8px; }
     .triple{
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.06);
-      padding: 10px 10px;
+      padding: 10px;
     }
     .tripleHead{
       display:flex;
@@ -530,23 +487,10 @@
       color: rgba(255,255,255,.90);
       white-space:nowrap;
     }
-    .line{
-      font-size: 12.5px;
-      color: rgba(255,255,255,.80);
-      line-height: 1.35;
-    }
-    .mini{
-      margin-top: 2px;
-      font-size: 12px;
-      color: rgba(255,255,255,.62);
-      line-height: 1.35;
-    }
+    .line{ font-size: 12.5px; color: rgba(255,255,255,.80); line-height: 1.35; }
+    .mini{ margin-top: 2px; font-size: 12px; color: rgba(255,255,255,.62); line-height: 1.35; }
 
-    .loadingBlock{
-      padding: 14px;
-      display:grid;
-      gap: 10px;
-    }
+    .loadingBlock{ padding: 14px; display:grid; gap: 10px; }
     .loadingLine{
       height: 12px;
       border-radius: 999px;
@@ -565,6 +509,13 @@
       0%{ transform: translateX(-60%); }
       100%{ transform: translateX(60%); }
     }
+
+    .errorBox{
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(251,113,133,.10);
+    }
   </style>
 </head>
 
@@ -578,15 +529,15 @@
   <div class="wrap">
     <div class="shell">
       <aside class="panel right">
-        <div class="brandRowMini">
-          <div class="brandMini"><span class="logoDot"></span><span>Travel Here</span></div>
+        <div class="brandRow">
+          <div class="brand"><span class="logoDot"></span><span>Travel Here</span></div>
           <div class="badge"><span class="dot"></span><span>Premium</span></div>
         </div>
 
         <div class="topLine">
           <div>
             <h2>Formulaire</h2>
-            <div class="hint">3 étapes • résultat affiché à la fin</div>
+            <div class="hint">3 étapes • le résultat s’affiche ici à la fin</div>
           </div>
           <div class="badge" style="background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18);">
             <span style="opacity:.92">~ 45s</span>
@@ -622,15 +573,16 @@
               <div class="field">
                 <label for="checkInDate">Date d’arrivée</label>
                 <input id="checkInDate" name="checkInDate" class="dateInput" placeholder="Choisir une date" autocomplete="off" required />
-                <svg class="calIcon" id="calIconIn" viewBox="0 0 24 24" fill="none" aria-label="Ouvrir calendrier arrivée" role="button">
+                <svg class="calIcon" id="calIconIn" viewBox="0 0 24 24" fill="none" role="button" aria-label="Ouvrir calendrier arrivée">
                   <path d="M7 2v3M17 2v3M3.5 9h17" stroke="white" stroke-opacity=".9" stroke-width="1.6" stroke-linecap="round"/>
                   <path d="M6 6h12a2.5 2.5 0 0 1 2.5 2.5V19A2.5 2.5 0 0 1 18 21.5H6A2.5 2.5 0 0 1 3.5 19V8.5A2.5 2.5 0 0 1 6 6Z" stroke="white" stroke-opacity=".9" stroke-width="1.6"/>
                 </svg>
               </div>
+
               <div class="field">
                 <label for="checkOutDate">Date de départ</label>
                 <input id="checkOutDate" name="checkOutDate" class="dateInput" placeholder="Choisir une date" autocomplete="off" required />
-                <svg class="calIcon" id="calIconOut" viewBox="0 0 24 24" fill="none" aria-label="Ouvrir calendrier départ" role="button">
+                <svg class="calIcon" id="calIconOut" viewBox="0 0 24 24" fill="none" role="button" aria-label="Ouvrir calendrier départ">
                   <path d="M7 2v3M17 2v3M3.5 9h17" stroke="white" stroke-opacity=".9" stroke-width="1.6" stroke-linecap="round"/>
                   <path d="M6 6h12a2.5 2.5 0 0 1 2.5 2.5V19A2.5 2.5 0 0 1 18 21.5H6A2.5 2.5 0 0 1 3.5 19V8.5A2.5 2.5 0 0 1 6 6Z" stroke="white" stroke-opacity=".9" stroke-width="1.6"/>
                 </svg>
@@ -693,34 +645,36 @@
 
           <!-- STEP 3 -->
           <div class="step" data-step="3" style="display:none">
-            <div class="field">
-              <label for="notes">Notes (optionnel)</label>
-              <textarea id="notes" name="notes" maxlength="250" placeholder="Ex : hôtel proche centre, départ le matin, pas trop de marche…"></textarea>
-              <div class="counterRow">
-                <span>Max 250 caractères</span>
-                <span id="notesCount">0/250</span>
+            <!-- Notes (disparaît quand les résultats apparaissent) -->
+            <div id="notesWrap">
+              <div class="field">
+                <label for="notes">Notes (optionnel)</label>
+                <textarea id="notes" name="notes" maxlength="250" placeholder="Ex : hôtel proche centre, départ le matin, pas trop de marche…"></textarea>
+                <div class="counterRow">
+                  <span>Max 250 caractères</span>
+                  <span id="notesCount">0/250</span>
+                </div>
               </div>
             </div>
 
+            <!-- Results (seul visible après génération) -->
             <div class="resultHero" id="resultHero" style="display:none;">
               <div class="resultHeroHead">
                 <div>
                   <h3>Ton Top 3 personnalisé</h3>
                   <div class="sub" id="resultSub">—</div>
                 </div>
-                <div class="pillMini" id="resultPill">Étape 3/3</div>
+                <div class="pillMini">Étape 3/3</div>
               </div>
 
-              <div id="resultArea">
-                <div class="loadingBlock" id="loadingBlock" style="display:none;">
-                  <div class="loadingLine"></div>
-                  <div class="loadingLine" style="width:78%"></div>
-                  <div class="loadingLine" style="width:62%"></div>
-                  <div class="loadingLine" style="width:70%"></div>
-                </div>
-
-                <div class="rankGrid" id="rankGrid"></div>
+              <div id="loadingBlock" class="loadingBlock" style="display:none;">
+                <div class="loadingLine"></div>
+                <div class="loadingLine" style="width:78%"></div>
+                <div class="loadingLine" style="width:62%"></div>
+                <div class="loadingLine" style="width:70%"></div>
               </div>
+
+              <div class="rankGrid" id="rankGrid"></div>
             </div>
           </div>
 
@@ -733,7 +687,7 @@
     </div>
   </div>
 
-  <!-- Custom Date Picker (desktop) -->
+  <!-- Desktop date picker -->
   <div class="dpBackdrop" id="dpBackdrop">
     <div class="dp" role="dialog" aria-modal="true" aria-label="Choisir une date">
       <div class="dpHeader">
@@ -753,8 +707,12 @@
   </div>
 
   <script>
+    // ====== CONFIG ======
+    const WEBHOOK_URL = "https://fullplata.app.n8n.cloud/webhook-test/voyage-ia";
+    // IMPORTANT: webhook-test = marche quand ton workflow n8n est en mode test (Execute). Pour public -> webhook (prod).
+
     // ===========================
-    // 1) FAST AUTOCOMPLETE (priorité + cache + debounce + abort)
+    // Fast autocomplete (priorité + cache + debounce + abort)
     // ===========================
     const POPULAR_CITIES = [
       { label: "Paris — France", value: "Paris" },
@@ -785,13 +743,12 @@
       { label: "Tokyo — Japon", value: "Tokyo" }
     ];
 
-    const cityCache = new Map(); // key: normalized query -> items
+    const cityCache = new Map();
     function normQ(q){ return (q||"").trim().toLowerCase(); }
 
     function fastLocalSuggest(q){
       const n = normQ(q);
       if(n.length < 1) return [];
-      // match prefix first, then contains
       const prefix = POPULAR_CITIES.filter(c => c.value.toLowerCase().startsWith(n));
       const contains = POPULAR_CITIES.filter(c => !c.value.toLowerCase().startsWith(n) && c.value.toLowerCase().includes(n));
       return [...prefix, ...contains].slice(0, 6);
@@ -811,20 +768,21 @@
       const items = data.map(item => {
         const city = item.address?.city || item.address?.town || item.address?.village || item.address?.municipality || item.display_name?.split(",")[0] || "";
         const country = item.address?.country || "";
-        return {
-          label: city ? `${city} — ${country}` : item.display_name,
-          value: city ? `${city}` : item.display_name
-        };
+        return { label: city ? `${city} — ${country}` : item.display_name, value: city ? `${city}` : item.display_name };
       }).filter(x => x.value);
 
-      // cache small
       cityCache.set(key, items);
-      // limit cache size
       if(cityCache.size > 80){
         const firstKey = cityCache.keys().next().value;
         cityCache.delete(firstKey);
       }
       return items;
+    }
+
+    function esc(str){
+      return String(str)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
     function attachSuggest(inputId, suggestId){
@@ -835,37 +793,20 @@
       let controller = null;
 
       function hide(){ box.style.display = "none"; box.innerHTML = ""; }
-
-      function render(items, rawInput){
-        const q = (rawInput || "").trim();
-
-        const htmlItems = items.map(it => `
-          <button type="button" data-value="${escapeHtml(it.value)}">
-            <div>${escapeHtml(it.label)}</div>
-          </button>
+      function render(items){
+        if(!items || items.length === 0){ hide(); return; }
+        box.innerHTML = items.map(it => `
+          <button type="button" data-value="${esc(it.value)}"><div>${esc(it.label)}</div></button>
         `).join("");
-
-        if(!htmlItems){
-          hide();
-          return;
-        }
-
-        box.innerHTML = htmlItems;
         box.style.display = "block";
       }
 
       function handleInput(){
         const q = input.value || "";
+
         const local = fastLocalSuggest(q);
+        render(local);
 
-        // show instantly local list (fast)
-        if(local.length > 0){
-          render(local, q);
-        }else{
-          hide();
-        }
-
-        // debounce remote
         if(t) clearTimeout(t);
         t = setTimeout(async () => {
           const qq = input.value || "";
@@ -876,27 +817,26 @@
 
           try{
             const remote = await fetchCitySuggestions(qq, controller.signal);
-            // merge: local first, then remote uniques
             const merged = [];
             const seen = new Set();
-            for(const it of fastLocalSuggest(qq)){ const k = it.value.toLowerCase(); if(!seen.has(k)){ seen.add(k); merged.push(it); } }
-            for(const it of remote){ const k = it.value.toLowerCase(); if(!seen.has(k)){ seen.add(k); merged.push(it); } }
-            render(merged.slice(0, 8), qq);
-          }catch(e){
-            // ignore abort/errors
-          }
+
+            for(const it of fastLocalSuggest(qq)){
+              const k = it.value.toLowerCase();
+              if(!seen.has(k)){ seen.add(k); merged.push(it); }
+            }
+            for(const it of remote){
+              const k = it.value.toLowerCase();
+              if(!seen.has(k)){ seen.add(k); merged.push(it); }
+            }
+            render(merged.slice(0, 8));
+          }catch(e){ /* ignore */ }
         }, 120);
       }
 
       input.addEventListener("input", handleInput);
-
       input.addEventListener("focus", () => {
-        // on focus, show popular instantly if empty
-        if((input.value || "").trim().length === 0){
-          render(POPULAR_CITIES.slice(0, 8), "");
-        }else{
-          handleInput();
-        }
+        if((input.value || "").trim().length === 0) render(POPULAR_CITIES.slice(0, 8));
+        else handleInput();
       });
 
       box.addEventListener("click", (e) => {
@@ -912,25 +852,14 @@
         hide();
       });
 
-      input.addEventListener("keydown", (e) => {
-        if(e.key === "Escape") hide();
-      });
-    }
-
-    function escapeHtml(str){
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+      input.addEventListener("keydown", (e) => { if(e.key === "Escape") hide(); });
     }
 
     attachSuggest("origin", "originSuggest");
     attachSuggest("destination", "destSuggest");
 
     // ===========================
-    // 2) Style / Interests
+    // Style / interests
     // ===========================
     const stylePills = document.getElementById('stylePills');
     const styleInput = document.getElementById('style');
@@ -948,22 +877,18 @@
       const chip = e.target.closest('.chip');
       if(!chip) return;
       chip.dataset.on = chip.dataset.on === "1" ? "0" : "1";
-      const on = [...chips.querySelectorAll('.chip[data-on="1"]')].map(el => el.dataset.value);
-      interestsInput.value = on.join(',');
+      interestsInput.value = [...chips.querySelectorAll('.chip[data-on="1"]')].map(el => el.dataset.value).join(',');
     });
 
     // Notes counter
     const notesEl = document.getElementById('notes');
     const notesCount = document.getElementById('notesCount');
-    function updateNotesCount(){
-      const len = (notesEl.value || "").length;
-      notesCount.textContent = `${len}/250`;
-    }
+    function updateNotesCount(){ notesCount.textContent = `${(notesEl.value||"").length}/250`; }
     notesEl.addEventListener('input', updateNotesCount);
     updateNotesCount();
 
     // ===========================
-    // 3) Date UX (icon opens too)
+    // Date UX (icon opens)
     // ===========================
     const dpBackdrop = document.getElementById("dpBackdrop");
     const dpTitle = document.getElementById("dpTitle");
@@ -997,23 +922,20 @@
       dpBackdrop.style.display = "flex";
       document.body.style.overflow = "hidden";
     }
-
     function closeDatePicker(){
       dpBackdrop.style.display = "none";
       document.body.style.overflow = "";
       activeDateInput = null;
     }
-
     function renderCalendar(){
       const m = viewDate.getMonth();
       const y = viewDate.getFullYear();
       dpTitle.textContent = `${MONTHS_FR[m]} ${y}`;
-
       dpDays.innerHTML = "";
+
       const first = startOfMonth(viewDate);
       const firstDow = (first.getDay() + 6) % 7; // Monday=0
       const total = daysInMonth(viewDate);
-
       for(let i=0;i<firstDow;i++){
         const blank = document.createElement("div");
         blank.style.height = "40px";
@@ -1021,7 +943,6 @@
       }
 
       const todayISO = toISO(new Date());
-
       for(let day=1; day<=total; day++){
         const d = new Date(y, m, day);
         const iso = toISO(d);
@@ -1042,19 +963,11 @@
           }
           closeDatePicker();
         });
-
         dpDays.appendChild(btn);
       }
     }
-
-    dpPrev.addEventListener("click", () => {
-      viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth()-1, 1);
-      renderCalendar();
-    });
-    dpNext.addEventListener("click", () => {
-      viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth()+1, 1);
-      renderCalendar();
-    });
+    dpPrev.addEventListener("click", () => { viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth()-1, 1); renderCalendar(); });
+    dpNext.addEventListener("click", () => { viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth()+1, 1); renderCalendar(); });
     dpBackdrop.addEventListener("click", (e) => { if(e.target === dpBackdrop) closeDatePicker(); });
 
     function isMobile(){
@@ -1088,7 +1001,7 @@
     enableDateUX();
 
     // ===========================
-    // 4) Steps + Progress
+    // Steps + Progress
     // ===========================
     let currentStep = 1;
     const steps = [...document.querySelectorAll('.step[data-step]')];
@@ -1111,13 +1024,8 @@
     }
 
     function isValidDates(inDate, outDate){
-      try{
-        const a = new Date(inDate);
-        const b = new Date(outDate);
-        return b > a;
-      }catch(e){ return false; }
+      try{ return new Date(outDate) > new Date(inDate); }catch(e){ return false; }
     }
-
     function requiredOkForStep1(){
       const dest = document.getElementById('destination')?.value?.trim();
       const inD = document.getElementById('checkInDate')?.value?.trim();
@@ -1127,33 +1035,24 @@
       return true;
     }
 
-    backBtn.addEventListener('click', () => {
-      if(currentStep > 1) showStep(currentStep - 1);
-    });
-
+    backBtn.addEventListener('click', () => { if(currentStep > 1) showStep(currentStep - 1); });
     nextBtn.addEventListener('click', async () => {
       if(currentStep === 1){
-        if(!requiredOkForStep1()){
-          alert("Remplis destination + dates (départ après arrivée).");
-          return;
-        }
-        showStep(2);
-        return;
+        if(!requiredOkForStep1()){ alert("Remplis destination + dates (départ après arrivée)."); return; }
+        showStep(2); return;
       }
-      if(currentStep === 2){
-        showStep(3);
-        return;
-      }
-      if(currentStep === 3){
-        await showTop3Triplets();
-      }
+      if(currentStep === 2){ showStep(3); return; }
+      if(currentStep === 3){ await showTop3TripletsFromN8N(); }
     });
 
     showStep(1);
 
     // ===========================
-    // 5) RESULT UI (Top 3 = 3 packs : vol + hôtel + activité)
+    // RESULTS: Top3 packs (vol + hôtel + activité) depuis n8n
+    // Format attendu (idéal):
+    // { top3: [ { label, meta:[], flight:{title,line,price}, hotel:{title,line,price}, activity:{title,line,price} }, ... ] }
     // ===========================
+    const notesWrap = document.getElementById("notesWrap");
     const resultHero = document.getElementById("resultHero");
     const resultSub = document.getElementById("resultSub");
     const loadingBlock = document.getElementById("loadingBlock");
@@ -1175,105 +1074,110 @@
       };
     }
 
-    function styleLabel(s){
-      return ({ balanced:"Équilibré", budget:"Petit budget", comfort:"Confort", luxury:"Luxe" })[s] || s;
-    }
-
-    function buildTripletsDemo(payload){
-      // Démo UI : 3 packs “vol + hôtel + activité” (à remplacer par tes données n8n ensuite)
-      const dest = payload.destination || "Ta destination";
-      const tags = [
-        { t:"Meilleur choix", m:["Direct/rapide","Hôtel central","Activité incontournable"] },
-        { t:"Rapport qualité/prix", m:["Flexible","Bon confort","Expérience locale"] },
-        { t:"Option premium", m:["Confort","Quartier premium","Moment mémorable"] }
-      ];
-
-      return [0,1,2].map(i => ({
-        rank: i+1,
-        label: tags[i].t,
-        meta: tags[i].m,
-        flight: {
-          title: `Vol vers ${dest}`,
-          line: i===0 ? "Départ matin • arrivée simple" : i===1 ? "Option flexible • escale courte" : "Confort optimisé • horaires cool",
-          price: "—"
-        },
-        hotel: {
-          title: `Hôtel à ${dest}`,
-          line: i===0 ? "Centre-ville • très bien noté" : i===1 ? "Quartier pratique • bon confort" : "Premium • ambiance haut de gamme",
-          price: "prix indispo"
-        },
-        activity: {
-          title: `Activité à ${dest}`,
-          line: i===0 ? "Incontournable • parfait pour découvrir" : i===1 ? "Expérience locale • super ambiance" : "Moment premium • souvenir assuré",
-          price: "—"
-        }
-      }));
-    }
-
     function renderTriplets(triplets, payload){
       const head = `${payload.destination || "—"} • ${payload.checkInDate || "—"} → ${payload.checkOutDate || "—"} • ${payload.adults || 2} adulte(s)`;
       resultSub.textContent = head;
 
-      rankGrid.innerHTML = triplets.map(t => `
+      const safeTriplets = triplets.slice(0,3);
+
+      rankGrid.innerHTML = safeTriplets.map((t, idx) => `
         <div class="rankCard">
           <div class="rankTop">
-            <b><span class="rankBadge">${t.rank}</span> ${escapeHtml(t.label)}</b>
+            <b><span class="rankBadge">${idx+1}</span> ${esc(t.label || "Option")}</b>
             <div class="rankMeta">
-              ${t.meta.map(x => `<span class="metaTag">${escapeHtml(x)}</span>`).join("")}
+              ${Array.isArray(t.meta) ? t.meta.slice(0,3).map(x => `<span class="metaTag">${esc(x)}</span>`).join("") : ""}
             </div>
           </div>
-
           <div class="rankBody">
             <div class="triple">
               <div class="tripleHead">
                 <div class="t">✈️ Vol</div>
-                <div class="price">${escapeHtml(t.flight.price || "—")}</div>
+                <div class="price">${esc(t.flight?.price || "—")}</div>
               </div>
-              <div class="line"><b>${escapeHtml(t.flight.title || "—")}</b></div>
-              <div class="mini">${escapeHtml(t.flight.line || "—")}</div>
+              <div class="line"><b>${esc(t.flight?.title || "—")}</b></div>
+              <div class="mini">${esc(t.flight?.line || "—")}</div>
             </div>
 
             <div class="triple">
               <div class="tripleHead">
                 <div class="t">🏨 Hôtel</div>
-                <div class="price">${escapeHtml(t.hotel.price || "prix indispo")}</div>
+                <div class="price">${esc(t.hotel?.price || "—")}</div>
               </div>
-              <div class="line"><b>${escapeHtml(t.hotel.title || "—")}</b></div>
-              <div class="mini">${escapeHtml(t.hotel.line || "—")}</div>
+              <div class="line"><b>${esc(t.hotel?.title || "—")}</b></div>
+              <div class="mini">${esc(t.hotel?.line || "—")}</div>
             </div>
 
             <div class="triple">
               <div class="tripleHead">
                 <div class="t">🎟️ Activité</div>
-                <div class="price">${escapeHtml(t.activity.price || "—")}</div>
+                <div class="price">${esc(t.activity?.price || "—")}</div>
               </div>
-              <div class="line"><b>${escapeHtml(t.activity.title || "—")}</b></div>
-              <div class="mini">${escapeHtml(t.activity.line || "—")}</div>
+              <div class="line"><b>${esc(t.activity?.title || "—")}</b></div>
+              <div class="mini">${esc(t.activity?.line || "—")}</div>
             </div>
           </div>
         </div>
       `).join("");
     }
 
-    async function showTop3Triplets(){
+    async function showTop3TripletsFromN8N(){
       const payload = getFormData();
 
+      // UI: results only
+      notesWrap.style.display = "none";
       resultHero.style.display = "block";
+      requestAnimationFrame(() => resultHero.classList.add("on"));
+
       loadingBlock.style.display = "grid";
       rankGrid.innerHTML = "";
+
       nextBtn.disabled = true;
       nextBtn.textContent = "Génération…";
 
-      // Ici tu brancheras ton webhook n8n pour les vrais résultats.
-      // Pour l’instant : rendu UI final “pétant” avec Top 3 packs.
-      await new Promise(r => setTimeout(r, 650));
-      const triplets = buildTripletsDemo(payload);
+      try{
+        const res = await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
 
-      loadingBlock.style.display = "none";
-      renderTriplets(triplets, payload);
+        if(!res.ok) throw new Error("Webhook HTTP " + res.status);
 
-      nextBtn.disabled = false;
-      nextBtn.textContent = "Régénérer";
+        const data = await res.json();
+        const triplets = Array.isArray(data.top3) ? data.top3 : [];
+
+        loadingBlock.style.display = "none";
+
+        if(triplets.length === 0){
+          rankGrid.innerHTML = `
+            <div class="errorBox">
+              <div style="font-weight:1000;">Aucun Top 3 reçu</div>
+              <div class="mini" style="margin-top:6px;">
+                Ton webhook a répondu, mais il n’a pas renvoyé <b>top3</b>.
+              </div>
+            </div>
+          `;
+        } else {
+          renderTriplets(triplets, payload);
+          // auto scroll to results
+          resultHero.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+      } catch (e){
+        loadingBlock.style.display = "none";
+        rankGrid.innerHTML = `
+          <div class="errorBox">
+            <div style="font-weight:1000;">Erreur d’appel n8n</div>
+            <div class="mini" style="margin-top:6px;">
+              Souvent c’est <b>CORS</b> ou le webhook-test inactif.
+            </div>
+            <div class="mini" style="opacity:.85;margin-top:6px;">${esc(e.message || String(e))}</div>
+          </div>
+        `;
+      } finally {
+        nextBtn.disabled = false;
+        nextBtn.textContent = "Régénérer";
+      }
     }
   </script>
 </body>
