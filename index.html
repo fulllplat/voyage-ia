@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Travel Here — Formulaire</title>
-  <meta name="description" content="Travel Here : formulaire premium pour générer une offre de voyage (vols, hôtels, activités)." />
+  <meta name="description" content="Travel Here : formulaire premium pour générer une offre de voyage (vol + hôtel + activité) en Top 3." />
 
   <style>
     :root{
@@ -12,12 +12,9 @@
       --muted: rgba(255,255,255,.74);
       --muted2: rgba(255,255,255,.58);
 
-      --card: rgba(255,255,255,.12);
       --stroke: rgba(255,255,255,.20);
-
       --accent: #60A5FA;
       --accent2:#34D399;
-      --danger:#FB7185;
 
       --shadow: 0 22px 64px rgba(0,0,0,.45);
       --r: 18px;
@@ -85,19 +82,15 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 14px 12px;
+      padding: 10px 10px;
     }
 
     .shell{
-      width: min(1060px, 100%);
+      width: min(980px, 100%);
       display:grid;
-      grid-template-columns: 1.05fr .95fr;
+      grid-template-columns: 1fr;
       gap: 14px;
       align-items: start;
-    }
-
-    @media (max-width: 900px){
-      .shell{grid-template-columns: 1fr;}
     }
 
     .panel{
@@ -107,48 +100,31 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(14px);
       overflow:hidden;
-      transform: translateY(0);
-      transition: transform .25s ease, border-color .25s ease;
       position:relative;
     }
-    .panel:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.26); }
 
-    .left{ padding: 20px 18px; }
-    .right{ padding: 16px 14px; }
+    .right{ padding: 14px 12px; }
 
-    /* ✅ Mobile: on cache le panneau gauche pour que l’utilisateur commence direct le formulaire sans scroller */
-    @media (max-width: 900px){
-      .left{ display:none; }
-      .wrap{ padding: 10px 10px; }
-      .right{ padding: 14px 12px; }
-    }
-
-    /* Brand */
+    /* Mini header */
     .brandRowMini{
-      display:none;
+      display:flex;
       align-items:center;
       justify-content:space-between;
       gap: 10px;
       margin-bottom: 10px;
     }
-    @media (max-width: 900px){
-      .brandRowMini{ display:flex; }
-    }
-
     .brandMini{
       display:flex; align-items:center; gap:10px;
       font-weight: 1000;
       letter-spacing:-.8px;
       font-size: 18px;
     }
-
     .logoDot{
       width:10px; height:10px; border-radius:50%;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       box-shadow: 0 0 0 7px rgba(96,165,250,.12);
       display:inline-block;
     }
-
     .badge{
       display:inline-flex;
       align-items:center;
@@ -174,14 +150,6 @@
       50%{transform:scale(1.25); opacity:.72}
     }
 
-    h1{
-      margin: 10px 0 8px;
-      font-size: clamp(22px, 2.6vw, 34px);
-      line-height: 1.08;
-      letter-spacing:-.5px;
-    }
-
-    /* Form header */
     .topLine{
       display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
       margin-bottom: 8px;
@@ -212,15 +180,10 @@
       outline:none;
       transition: border-color .18s ease, background .18s ease, box-shadow .18s ease, transform .18s ease;
       backdrop-filter: blur(10px);
-      font-size: 14px;
+      font-size: 16px; /* anti-zoom iPhone */
     }
 
-    /* ✅ Anti-zoom iPhone: 16px minimum sur mobile */
-    @media (max-width: 900px){
-      input, textarea{ font-size: 16px; }
-    }
-
-    textarea{min-height: 100px; resize: vertical}
+    textarea{min-height: 110px; resize: vertical}
     input::placeholder, textarea::placeholder{color: rgba(255,255,255,.52)}
     input:focus, textarea:focus{
       border-color: rgba(96,165,250,.55);
@@ -237,8 +200,8 @@
       width: 22px;
       height: 22px;
       opacity:.92;
-      cursor:pointer;           /* ✅ cliquable */
-      pointer-events:auto;      /* ✅ reçoit le clic */
+      cursor:pointer;
+      pointer-events:auto;
       filter: drop-shadow(0 6px 18px rgba(0,0,0,.25));
     }
 
@@ -254,6 +217,7 @@
       font-size: 13px;
       font-weight: 900;
       transition: transform .16s ease, background .16s ease, border-color .16s ease;
+      white-space:nowrap;
     }
     .pill:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
     .pill[data-on="1"]{ background: rgba(96,165,250,.18); border-color: rgba(96,165,250,.34); }
@@ -280,7 +244,7 @@
       position:absolute;
       top: calc(100% + 8px);
       left:0; right:0;
-      background: rgba(10,12,20,.86);
+      background: rgba(10,12,20,.90);
       border: 1px solid rgba(255,255,255,.18);
       border-radius: 14px;
       overflow:hidden;
@@ -288,6 +252,9 @@
       display:none;
       z-index: 50;
       backdrop-filter: blur(12px);
+      max-height: 320px;
+      overflow-y:auto;
+      -webkit-overflow-scrolling: touch;
     }
     .suggest button{
       width:100%;
@@ -297,7 +264,7 @@
       color: rgba(255,255,255,.92);
       padding: 10px 12px;
       cursor:pointer;
-      font-size: 13.5px;
+      font-size: 14px;
       transition: background .14s ease;
     }
     .suggest button:hover{ background: rgba(96,165,250,.14); }
@@ -319,6 +286,7 @@
     }
     .btn:hover{transform: translateY(-1px); filter: brightness(1.03)}
     .btn:active{transform: translateY(0px); filter: brightness(.98)}
+    .btn:disabled{ opacity:.65; cursor:not-allowed; transform:none; }
 
     .secondaryBtn{
       border: 1px solid rgba(255,255,255,.18);
@@ -331,9 +299,6 @@
       transition: transform .16s ease, filter .16s ease;
       width:100%;
     }
-    .secondaryBtn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
-
-    .fine{ margin: 10px 0 0; color: rgba(255,255,255,.62); font-size: 12px; line-height:1.35; }
 
     /* Progress */
     .progressWrap{
@@ -365,60 +330,6 @@
       background: linear-gradient(135deg, rgba(96,165,250,1), rgba(52,211,153,.95));
       transition: width .25s ease;
     }
-
-    /* Recap / results cards */
-    .recap{
-      padding: 12px 12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.14);
-      display:grid;
-      gap: 6px;
-      font-size: 13px;
-      color: rgba(255,255,255,.86);
-    }
-    .recap .row{
-      display:flex;
-      justify-content:space-between;
-      gap: 12px;
-      color: rgba(255,255,255,.86);
-    }
-    .recap .row span:last-child{
-      font-weight:1000;
-      color: rgba(255,255,255,.92);
-      text-align:right;
-    }
-
-    .cards{
-      display:grid;
-      gap:10px;
-    }
-    .card{
-      padding: 12px 12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.14);
-    }
-    .card h3{
-      margin:0 0 6px;
-      font-size: 13.5px;
-      letter-spacing:-.2px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .tag{
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(96,165,250,.16);
-      border: 1px solid rgba(96,165,250,.26);
-      color: rgba(255,255,255,.86);
-      white-space:nowrap;
-    }
-    .muted{ color: rgba(255,255,255,.66); font-size: 12px; line-height:1.35; }
-    .divider{ height:1px; background: rgba(255,255,255,.12); margin: 10px 0; }
 
     /* Notes counter */
     .counterRow{
@@ -497,7 +408,145 @@
     .day.isToday{ border-color: rgba(52,211,153,.32); background: rgba(52,211,153,.10); }
     .day.isSelected{ border-color: rgba(96,165,250,.45); background: rgba(96,165,250,.22); }
 
-    /* Small loading shimmer */
+    /* ======= RESULTS (pétant) ======= */
+    .resultHero{
+      margin-top: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.18);
+      background:
+        radial-gradient(900px 380px at 10% 0%, rgba(96,165,250,.30), transparent 55%),
+        radial-gradient(900px 380px at 90% 0%, rgba(52,211,153,.22), transparent 55%),
+        rgba(255,255,255,.08);
+      box-shadow: 0 24px 70px rgba(0,0,0,.45);
+      overflow:hidden;
+    }
+    .resultHeroHead{
+      padding: 14px 14px 10px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .resultHeroHead h3{
+      margin:0;
+      font-size: 15px;
+      letter-spacing:-.2px;
+    }
+    .resultHeroHead .sub{
+      margin: 4px 0 0;
+      color: rgba(255,255,255,.72);
+      font-size: 12.5px;
+      line-height: 1.3;
+    }
+    .pillMini{
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.86);
+      white-space:nowrap;
+    }
+
+    .rankGrid{
+      padding: 12px 12px 14px;
+      display:grid;
+      gap: 10px;
+    }
+    .rankCard{
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.16);
+      overflow:hidden;
+    }
+    .rankTop{
+      padding: 10px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+    }
+    .rankTop b{
+      display:flex; align-items:center; gap:10px;
+      font-size: 13.5px;
+      letter-spacing:-.2px;
+    }
+    .rankBadge{
+      width: 26px; height:26px;
+      border-radius: 10px;
+      display:grid; place-items:center;
+      background: linear-gradient(135deg, rgba(96,165,250,.26), rgba(52,211,153,.18));
+      border: 1px solid rgba(255,255,255,.16);
+      font-weight: 1000;
+    }
+    .rankMeta{
+      display:flex; gap: 8px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .metaTag{
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(96,165,250,.14);
+      border: 1px solid rgba(96,165,250,.22);
+      color: rgba(255,255,255,.84);
+      white-space:nowrap;
+    }
+
+    .rankBody{
+      padding: 10px 12px 12px;
+      display:grid;
+      gap: 8px;
+    }
+
+    .triple{
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      padding: 10px 10px;
+    }
+    .tripleHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .tripleHead .t{
+      font-weight: 1000;
+      font-size: 12.5px;
+      letter-spacing:-.2px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .price{
+      font-weight: 1000;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(52,211,153,.14);
+      border: 1px solid rgba(52,211,153,.22);
+      color: rgba(255,255,255,.90);
+      white-space:nowrap;
+    }
+    .line{
+      font-size: 12.5px;
+      color: rgba(255,255,255,.80);
+      line-height: 1.35;
+    }
+    .mini{
+      margin-top: 2px;
+      font-size: 12px;
+      color: rgba(255,255,255,.62);
+      line-height: 1.35;
+    }
+
+    .loadingBlock{
+      padding: 14px;
+      display:grid;
+      gap: 10px;
+    }
     .loadingLine{
       height: 12px;
       border-radius: 999px;
@@ -528,51 +577,22 @@
 
   <div class="wrap">
     <div class="shell">
-
-      <!-- LEFT (masqué sur mobile) -->
-      <section class="panel left">
-        <div class="badge">
-          <span class="dot"></span>
-          <span>Service premium</span>
-        </div>
-
-        <h1 style="margin-top:10px;"><span class="logoDot"></span>Travel Here</h1>
-        <p style="margin:0;color:var(--muted);line-height:1.55;">
-          Remplis le formulaire, et reçois ton Top 3 (vols + hôtels + activités) immédiatement après paiement.
-        </p>
-
-        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
-          <span class="badge" style="background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);"><span style="opacity:.92;">⚡ Immédiat</span></span>
-          <span class="badge" style="background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);"><span style="opacity:.92;">📱 Mobile-first</span></span>
-          <span class="badge" style="background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);"><span style="opacity:.92;">✨ Premium</span></span>
-        </div>
-
-        <p class="fine" style="margin-top:14px;">
-          Travel Here — expérience pensée pour convertir depuis TikTok.
-        </p>
-      </section>
-
-      <!-- RIGHT -->
       <aside class="panel right">
-        <!-- Mini header sur mobile -->
         <div class="brandRowMini">
           <div class="brandMini"><span class="logoDot"></span><span>Travel Here</span></div>
-          <div class="badge" style="background: rgba(96,165,250,.16); border-color: rgba(96,165,250,.26);">
-            <span class="dot"></span><span>Premium</span>
-          </div>
+          <div class="badge"><span class="dot"></span><span>Premium</span></div>
         </div>
 
         <div class="topLine">
           <div>
             <h2>Formulaire</h2>
-            <div class="hint">3 étapes • résultat affiché à la fin ✅</div>
+            <div class="hint">3 étapes • résultat affiché à la fin</div>
           </div>
           <div class="badge" style="background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18);">
             <span style="opacity:.92">~ 45s</span>
           </div>
         </div>
 
-        <!-- Progress -->
         <div class="progressWrap">
           <div class="progressTop">
             <span id="stepLabel">Étape 1/3</span>
@@ -675,47 +695,45 @@
           <div class="step" data-step="3" style="display:none">
             <div class="field">
               <label for="notes">Notes (optionnel)</label>
-              <textarea id="notes" name="notes" maxlength="300" placeholder="Ex : hôtel proche centre, départ le matin, pas trop de marche…"></textarea>
+              <textarea id="notes" name="notes" maxlength="250" placeholder="Ex : hôtel proche centre, départ le matin, pas trop de marche…"></textarea>
               <div class="counterRow">
-                <span>Max 300 caractères</span>
-                <span id="notesCount">0/300</span>
+                <span>Max 250 caractères</span>
+                <span id="notesCount">0/250</span>
               </div>
             </div>
 
-            <div class="field">
-              <label>Récapitulatif</label>
-              <div class="recap" id="recapBox">
-                <div class="row"><span>Destination</span><span>—</span></div>
-                <div class="row"><span>Dates</span><span>—</span></div>
-                <div class="row"><span>Voyageurs</span><span>—</span></div>
-                <div class="row"><span>Style</span><span>—</span></div>
-                <div class="row"><span>Budget</span><span>—</span></div>
+            <div class="resultHero" id="resultHero" style="display:none;">
+              <div class="resultHeroHead">
+                <div>
+                  <h3>Ton Top 3 personnalisé</h3>
+                  <div class="sub" id="resultSub">—</div>
+                </div>
+                <div class="pillMini" id="resultPill">Étape 3/3</div>
               </div>
-            </div>
 
-            <!-- Résultat affiché à la fin -->
-            <div class="field" id="resultWrap" style="display:none;">
-              <label>Ton résultat</label>
-              <div class="cards" id="resultCards"></div>
-              <div class="divider"></div>
-              <div class="muted">Si tu veux, tu peux ensuite brancher l’envoi par email via n8n (optionnel).</div>
+              <div id="resultArea">
+                <div class="loadingBlock" id="loadingBlock" style="display:none;">
+                  <div class="loadingLine"></div>
+                  <div class="loadingLine" style="width:78%"></div>
+                  <div class="loadingLine" style="width:62%"></div>
+                  <div class="loadingLine" style="width:70%"></div>
+                </div>
+
+                <div class="rankGrid" id="rankGrid"></div>
+              </div>
             </div>
           </div>
 
-          <!-- Navigation buttons -->
           <div style="display:flex;gap:10px;">
             <button type="button" class="secondaryBtn" id="backBtn" style="flex:1;display:none;">Retour</button>
             <button type="button" class="btn" id="nextBtn" style="flex:2;">Continuer</button>
           </div>
-
-          <p class="fine">Travel Here — expérience mobile premium.</p>
         </form>
       </aside>
-
     </div>
   </div>
 
-  <!-- Custom Date Picker -->
+  <!-- Custom Date Picker (desktop) -->
   <div class="dpBackdrop" id="dpBackdrop">
     <div class="dp" role="dialog" aria-modal="true" aria-label="Choisir une date">
       <div class="dpHeader">
@@ -735,7 +753,185 @@
   </div>
 
   <script>
-    // ======== Style pills -> hidden input ========
+    // ===========================
+    // 1) FAST AUTOCOMPLETE (priorité + cache + debounce + abort)
+    // ===========================
+    const POPULAR_CITIES = [
+      { label: "Paris — France", value: "Paris" },
+      { label: "Lyon — France", value: "Lyon" },
+      { label: "Marseille — France", value: "Marseille" },
+      { label: "Nice — France", value: "Nice" },
+      { label: "Toulouse — France", value: "Toulouse" },
+      { label: "Bordeaux — France", value: "Bordeaux" },
+      { label: "Nantes — France", value: "Nantes" },
+      { label: "Lille — France", value: "Lille" },
+      { label: "Bruxelles — Belgique", value: "Bruxelles" },
+      { label: "Genève — Suisse", value: "Genève" },
+      { label: "Londres — Royaume-Uni", value: "Londres" },
+      { label: "Barcelone — Espagne", value: "Barcelone" },
+      { label: "Madrid — Espagne", value: "Madrid" },
+      { label: "Lisbonne — Portugal", value: "Lisbonne" },
+      { label: "Rome — Italie", value: "Rome" },
+      { label: "Milan — Italie", value: "Milan" },
+      { label: "Berlin — Allemagne", value: "Berlin" },
+      { label: "Amsterdam — Pays-Bas", value: "Amsterdam" },
+      { label: "Prague — République tchèque", value: "Prague" },
+      { label: "Athènes — Grèce", value: "Athènes" },
+      { label: "Istanbul — Turquie", value: "Istanbul" },
+      { label: "New York — USA", value: "New York" },
+      { label: "Montréal — Canada", value: "Montréal" },
+      { label: "Dubai — Émirats arabes unis", value: "Dubai" },
+      { label: "Bangkok — Thaïlande", value: "Bangkok" },
+      { label: "Tokyo — Japon", value: "Tokyo" }
+    ];
+
+    const cityCache = new Map(); // key: normalized query -> items
+    function normQ(q){ return (q||"").trim().toLowerCase(); }
+
+    function fastLocalSuggest(q){
+      const n = normQ(q);
+      if(n.length < 1) return [];
+      // match prefix first, then contains
+      const prefix = POPULAR_CITIES.filter(c => c.value.toLowerCase().startsWith(n));
+      const contains = POPULAR_CITIES.filter(c => !c.value.toLowerCase().startsWith(n) && c.value.toLowerCase().includes(n));
+      return [...prefix, ...contains].slice(0, 6);
+    }
+
+    async function fetchCitySuggestions(query, signal){
+      const q = query.trim();
+      if(q.length < 2) return [];
+      const key = normQ(q);
+      if(cityCache.has(key)) return cityCache.get(key);
+
+      const url = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=8&accept-language=fr&q=" + encodeURIComponent(q);
+      const res = await fetch(url, { headers: { "Accept": "application/json" }, signal });
+      if(!res.ok) throw new Error("nominatim");
+      const data = await res.json();
+
+      const items = data.map(item => {
+        const city = item.address?.city || item.address?.town || item.address?.village || item.address?.municipality || item.display_name?.split(",")[0] || "";
+        const country = item.address?.country || "";
+        return {
+          label: city ? `${city} — ${country}` : item.display_name,
+          value: city ? `${city}` : item.display_name
+        };
+      }).filter(x => x.value);
+
+      // cache small
+      cityCache.set(key, items);
+      // limit cache size
+      if(cityCache.size > 80){
+        const firstKey = cityCache.keys().next().value;
+        cityCache.delete(firstKey);
+      }
+      return items;
+    }
+
+    function attachSuggest(inputId, suggestId){
+      const input = document.getElementById(inputId);
+      const box = document.getElementById(suggestId);
+
+      let t = null;
+      let controller = null;
+
+      function hide(){ box.style.display = "none"; box.innerHTML = ""; }
+
+      function render(items, rawInput){
+        const q = (rawInput || "").trim();
+
+        const htmlItems = items.map(it => `
+          <button type="button" data-value="${escapeHtml(it.value)}">
+            <div>${escapeHtml(it.label)}</div>
+          </button>
+        `).join("");
+
+        if(!htmlItems){
+          hide();
+          return;
+        }
+
+        box.innerHTML = htmlItems;
+        box.style.display = "block";
+      }
+
+      function handleInput(){
+        const q = input.value || "";
+        const local = fastLocalSuggest(q);
+
+        // show instantly local list (fast)
+        if(local.length > 0){
+          render(local, q);
+        }else{
+          hide();
+        }
+
+        // debounce remote
+        if(t) clearTimeout(t);
+        t = setTimeout(async () => {
+          const qq = input.value || "";
+          if(qq.trim().length < 2) return;
+
+          if(controller) controller.abort();
+          controller = new AbortController();
+
+          try{
+            const remote = await fetchCitySuggestions(qq, controller.signal);
+            // merge: local first, then remote uniques
+            const merged = [];
+            const seen = new Set();
+            for(const it of fastLocalSuggest(qq)){ const k = it.value.toLowerCase(); if(!seen.has(k)){ seen.add(k); merged.push(it); } }
+            for(const it of remote){ const k = it.value.toLowerCase(); if(!seen.has(k)){ seen.add(k); merged.push(it); } }
+            render(merged.slice(0, 8), qq);
+          }catch(e){
+            // ignore abort/errors
+          }
+        }, 120);
+      }
+
+      input.addEventListener("input", handleInput);
+
+      input.addEventListener("focus", () => {
+        // on focus, show popular instantly if empty
+        if((input.value || "").trim().length === 0){
+          render(POPULAR_CITIES.slice(0, 8), "");
+        }else{
+          handleInput();
+        }
+      });
+
+      box.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if(!btn) return;
+        input.value = btn.dataset.value;
+        hide();
+        input.dispatchEvent(new Event("change"));
+      });
+
+      document.addEventListener("click", (e) => {
+        if(e.target === input || box.contains(e.target)) return;
+        hide();
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if(e.key === "Escape") hide();
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    attachSuggest("origin", "originSuggest");
+    attachSuggest("destination", "destSuggest");
+
+    // ===========================
+    // 2) Style / Interests
+    // ===========================
     const stylePills = document.getElementById('stylePills');
     const styleInput = document.getElementById('style');
     stylePills.addEventListener('click', (e) => {
@@ -744,10 +940,8 @@
       [...stylePills.querySelectorAll('.pill')].forEach(p => p.dataset.on = "0");
       pill.dataset.on = "1";
       styleInput.value = pill.dataset.value;
-      updateRecap();
     });
 
-    // ======== Interests chips -> CSV hidden input ========
     const chips = document.getElementById('chips');
     const interestsInput = document.getElementById('interests');
     chips.addEventListener('click', (e) => {
@@ -758,102 +952,19 @@
       interestsInput.value = on.join(',');
     });
 
-    // ======== Notes max + counter ========
+    // Notes counter
     const notesEl = document.getElementById('notes');
     const notesCount = document.getElementById('notesCount');
     function updateNotesCount(){
       const len = (notesEl.value || "").length;
-      notesCount.textContent = `${len}/300`;
+      notesCount.textContent = `${len}/250`;
     }
     notesEl.addEventListener('input', updateNotesCount);
     updateNotesCount();
 
-    // ======== Cities autocomplete (ALL cities via OpenStreetMap Nominatim) ========
-    async function fetchCitySuggestions(query){
-      const q = query.trim();
-      if(q.length < 2) return [];
-      const url = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=8&accept-language=fr&q=" + encodeURIComponent(q);
-      const res = await fetch(url, { headers: { "Accept": "application/json" } });
-      if(!res.ok) throw new Error("nominatim");
-      const data = await res.json();
-
-      return data.map(item => {
-        const city = item.address?.city || item.address?.town || item.address?.village || item.address?.municipality || item.display_name?.split(",")[0] || "";
-        const country = item.address?.country || "";
-        return {
-          label: city ? `${city} — ${country}` : item.display_name,
-          value: city ? `${city}` : item.display_name
-        };
-      }).filter(x => x.value);
-    }
-
-    function attachSuggest(inputId, suggestId){
-      const input = document.getElementById(inputId);
-      const box = document.getElementById(suggestId);
-      let lastReq = 0;
-
-      function hide(){ box.style.display = "none"; box.innerHTML = ""; }
-
-      function render(items, rawInput){
-        const q = (rawInput || "").trim();
-        const fallback = q.length >= 2
-          ? `<button type="button" data-value="${q}">
-               <div>Utiliser : <strong>${q}</strong> <span class="muted">— (si non listé)</span></div>
-             </button>`
-          : "";
-
-        const htmlItems = items.map(it => `
-          <button type="button" data-value="${it.value}">
-            <div>${it.label}</div>
-          </button>
-        `).join("");
-
-        if(!htmlItems && !fallback){ hide(); return; }
-
-        box.innerHTML = htmlItems + (fallback ? `<div style="height:1px;background:rgba(255,255,255,.12)"></div>${fallback}` : "");
-        box.style.display = "block";
-      }
-
-      input.addEventListener("input", async () => {
-        const q = input.value;
-        const reqId = ++lastReq;
-
-        if(q.trim().length < 2){
-          render([], q);
-          return;
-        }
-
-        try{
-          const items = await fetchCitySuggestions(q);
-          if(reqId !== lastReq) return;
-          render(items, q);
-        }catch(e){
-          if(reqId !== lastReq) return;
-          render([], q);
-        }
-      });
-
-      box.addEventListener("click", (e) => {
-        const btn = e.target.closest("button");
-        if(!btn) return;
-        input.value = btn.dataset.value;
-        hide();
-        updateRecap();
-        input.dispatchEvent(new Event("change"));
-      });
-
-      document.addEventListener("click", (e) => {
-        if(e.target === input || box.contains(e.target)) return;
-        hide();
-      });
-
-      input.addEventListener("keydown", (e) => { if(e.key === "Escape") hide(); });
-    }
-
-    attachSuggest("origin", "originSuggest");
-    attachSuggest("destination", "destSuggest");
-
-    // ======== Date Picker (desktop custom; mobile native) ========
+    // ===========================
+    // 3) Date UX (icon opens too)
+    // ===========================
     const dpBackdrop = document.getElementById("dpBackdrop");
     const dpTitle = document.getElementById("dpTitle");
     const dpDays = document.getElementById("dpDays");
@@ -928,7 +1039,6 @@
           if(activeDateInput){
             activeDateInput.value = iso;
             activeDateInput.dispatchEvent(new Event("change"));
-            updateRecap();
           }
           closeDatePicker();
         });
@@ -962,27 +1072,24 @@
         checkOut.type = "date";
         checkIn.placeholder = "";
         checkOut.placeholder = "";
-
-        // ✅ icône calendrier ouvre le natif (focus/click)
-        calIconIn.addEventListener("click", () => { checkIn.showPicker?.(); checkIn.focus(); checkIn.click(); });
-        calIconOut.addEventListener("click", () => { checkOut.showPicker?.(); checkOut.focus(); checkOut.click(); });
+        calIconIn.onclick = () => { checkIn.showPicker?.(); checkIn.focus(); checkIn.click(); };
+        calIconOut.onclick = () => { checkOut.showPicker?.(); checkOut.focus(); checkOut.click(); };
         return;
       }
-
       checkIn.type = "text";
       checkOut.type = "text";
       checkIn.addEventListener("click", () => openDatePicker(checkIn));
       checkOut.addEventListener("click", () => openDatePicker(checkOut));
       checkIn.addEventListener("keydown", (e) => e.preventDefault());
       checkOut.addEventListener("keydown", (e) => e.preventDefault());
-
-      // ✅ icône calendrier ouvre aussi
-      calIconIn.addEventListener("click", () => openDatePicker(checkIn));
-      calIconOut.addEventListener("click", () => openDatePicker(checkOut));
+      calIconIn.onclick = () => openDatePicker(checkIn);
+      calIconOut.onclick = () => openDatePicker(checkOut);
     }
     enableDateUX();
 
-    // ======== 3-step navigation + progress ========
+    // ===========================
+    // 4) Steps + Progress
+    // ===========================
     let currentStep = 1;
     const steps = [...document.querySelectorAll('.step[data-step]')];
     const backBtn = document.getElementById('backBtn');
@@ -990,19 +1097,17 @@
     const stepLabel = document.getElementById('stepLabel');
     const stepHint = document.getElementById('stepHint');
     const progressBar = document.getElementById('progressBar');
-
-    const hints = { 1: "Voyage", 2: "Préférences", 3: "Finalisation" };
+    const hints = { 1: "Voyage", 2: "Préférences", 3: "Résultat" };
 
     function showStep(n){
       currentStep = n;
       steps.forEach(s => s.style.display = (Number(s.dataset.step) === n) ? "block" : "none");
       backBtn.style.display = (n === 1) ? "none" : "inline-flex";
-      nextBtn.textContent = (n === 3) ? "Afficher mon résultat" : "Continuer";
+      nextBtn.textContent = (n === 3) ? "Voir mon Top 3" : "Continuer";
       stepLabel.textContent = `Étape ${n}/3`;
       stepHint.textContent = hints[n] || "";
       progressBar.style.width = (n === 1 ? "33%" : n === 2 ? "66%" : "100%");
       window.scrollTo({top: 0, behavior: "smooth"});
-      updateRecap();
     }
 
     function isValidDates(inDate, outDate){
@@ -1029,7 +1134,7 @@
     nextBtn.addEventListener('click', async () => {
       if(currentStep === 1){
         if(!requiredOkForStep1()){
-          alert("Remplis destination + dates (et vérifie que la date de départ est après l’arrivée).");
+          alert("Remplis destination + dates (départ après arrivée).");
           return;
         }
         showStep(2);
@@ -1040,118 +1145,136 @@
         return;
       }
       if(currentStep === 3){
-        // ✅ Affiche un résultat "très beau" dans la page (démo UI).
-        // Ensuite tu pourras le brancher à n8n (webhook) pour un vrai résultat.
-        await showBeautifulResultDemo();
+        await showTop3Triplets();
       }
     });
 
-    // ======== Recap ========
-    function updateRecap(){
-      const dest = document.getElementById('destination')?.value?.trim() || "—";
-      const inD = document.getElementById('checkInDate')?.value?.trim() || "—";
-      const outD = document.getElementById('checkOutDate')?.value?.trim() || "—";
-      const adults = document.getElementById('adults')?.value || "2";
-      const children = document.getElementById('children')?.value || "0";
-      const style = document.getElementById('style')?.value || "balanced";
-      const budget = document.getElementById('budget')?.value?.trim() ? `${document.getElementById('budget').value} €` : "—";
+    showStep(1);
 
-      const styleLabel = ({
-        balanced: "Équilibré",
-        budget: "Petit budget",
-        comfort: "Confort",
-        luxury: "Luxe"
-      })[style] || style;
+    // ===========================
+    // 5) RESULT UI (Top 3 = 3 packs : vol + hôtel + activité)
+    // ===========================
+    const resultHero = document.getElementById("resultHero");
+    const resultSub = document.getElementById("resultSub");
+    const loadingBlock = document.getElementById("loadingBlock");
+    const rankGrid = document.getElementById("rankGrid");
 
-      const box = document.getElementById('recapBox');
-      if(!box) return;
-
-      box.innerHTML = `
-        <div class="row"><span>Destination</span><span>${escapeHtml(dest)}</span></div>
-        <div class="row"><span>Dates</span><span>${escapeHtml(inD)} → ${escapeHtml(outD)}</span></div>
-        <div class="row"><span>Voyageurs</span><span>${escapeHtml(adults)} adultes, ${escapeHtml(children)} enfants</span></div>
-        <div class="row"><span>Style</span><span>${escapeHtml(styleLabel)}</span></div>
-        <div class="row"><span>Budget</span><span>${escapeHtml(budget)}</span></div>
-      `;
+    function getFormData(){
+      return {
+        origin: document.getElementById("origin")?.value?.trim() || "",
+        destination: document.getElementById("destination")?.value?.trim() || "",
+        checkInDate: document.getElementById("checkInDate")?.value?.trim() || "",
+        checkOutDate: document.getElementById("checkOutDate")?.value?.trim() || "",
+        adults: Number(document.getElementById("adults")?.value || 2),
+        children: Number(document.getElementById("children")?.value || 0),
+        roomQuantity: Number(document.getElementById("roomQuantity")?.value || 1),
+        budget: document.getElementById("budget")?.value?.trim() || "",
+        style: document.getElementById("style")?.value || "balanced",
+        interests: document.getElementById("interests")?.value || "",
+        notes: (document.getElementById("notes")?.value || "").trim()
+      };
     }
 
-    function escapeHtml(str){
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    function styleLabel(s){
+      return ({ balanced:"Équilibré", budget:"Petit budget", comfort:"Confort", luxury:"Luxe" })[s] || s;
     }
 
-    // ======== Beautiful result (DEMO) ========
-    async function showBeautifulResultDemo(){
-      const wrap = document.getElementById("resultWrap");
-      const cards = document.getElementById("resultCards");
-      wrap.style.display = "block";
+    function buildTripletsDemo(payload){
+      // Démo UI : 3 packs “vol + hôtel + activité” (à remplacer par tes données n8n ensuite)
+      const dest = payload.destination || "Ta destination";
+      const tags = [
+        { t:"Meilleur choix", m:["Direct/rapide","Hôtel central","Activité incontournable"] },
+        { t:"Rapport qualité/prix", m:["Flexible","Bon confort","Expérience locale"] },
+        { t:"Option premium", m:["Confort","Quartier premium","Moment mémorable"] }
+      ];
 
-      // loading UI
-      cards.innerHTML = `
-        <div class="card">
-          <h3>Préparation de ton Top 3 <span class="tag">en cours</span></h3>
-          <div class="loadingLine" style="margin-top:10px;"></div>
-          <div class="loadingLine" style="margin-top:10px;width:78%;"></div>
-          <div class="loadingLine" style="margin-top:10px;width:62%;"></div>
-          <div class="muted" style="margin-top:10px;">On sélectionne les meilleures options pour ton voyage…</div>
+      return [0,1,2].map(i => ({
+        rank: i+1,
+        label: tags[i].t,
+        meta: tags[i].m,
+        flight: {
+          title: `Vol vers ${dest}`,
+          line: i===0 ? "Départ matin • arrivée simple" : i===1 ? "Option flexible • escale courte" : "Confort optimisé • horaires cool",
+          price: "—"
+        },
+        hotel: {
+          title: `Hôtel à ${dest}`,
+          line: i===0 ? "Centre-ville • très bien noté" : i===1 ? "Quartier pratique • bon confort" : "Premium • ambiance haut de gamme",
+          price: "prix indispo"
+        },
+        activity: {
+          title: `Activité à ${dest}`,
+          line: i===0 ? "Incontournable • parfait pour découvrir" : i===1 ? "Expérience locale • super ambiance" : "Moment premium • souvenir assuré",
+          price: "—"
+        }
+      }));
+    }
+
+    function renderTriplets(triplets, payload){
+      const head = `${payload.destination || "—"} • ${payload.checkInDate || "—"} → ${payload.checkOutDate || "—"} • ${payload.adults || 2} adulte(s)`;
+      resultSub.textContent = head;
+
+      rankGrid.innerHTML = triplets.map(t => `
+        <div class="rankCard">
+          <div class="rankTop">
+            <b><span class="rankBadge">${t.rank}</span> ${escapeHtml(t.label)}</b>
+            <div class="rankMeta">
+              ${t.meta.map(x => `<span class="metaTag">${escapeHtml(x)}</span>`).join("")}
+            </div>
+          </div>
+
+          <div class="rankBody">
+            <div class="triple">
+              <div class="tripleHead">
+                <div class="t">✈️ Vol</div>
+                <div class="price">${escapeHtml(t.flight.price || "—")}</div>
+              </div>
+              <div class="line"><b>${escapeHtml(t.flight.title || "—")}</b></div>
+              <div class="mini">${escapeHtml(t.flight.line || "—")}</div>
+            </div>
+
+            <div class="triple">
+              <div class="tripleHead">
+                <div class="t">🏨 Hôtel</div>
+                <div class="price">${escapeHtml(t.hotel.price || "prix indispo")}</div>
+              </div>
+              <div class="line"><b>${escapeHtml(t.hotel.title || "—")}</b></div>
+              <div class="mini">${escapeHtml(t.hotel.line || "—")}</div>
+            </div>
+
+            <div class="triple">
+              <div class="tripleHead">
+                <div class="t">🎟️ Activité</div>
+                <div class="price">${escapeHtml(t.activity.price || "—")}</div>
+              </div>
+              <div class="line"><b>${escapeHtml(t.activity.title || "—")}</b></div>
+              <div class="mini">${escapeHtml(t.activity.line || "—")}</div>
+            </div>
+          </div>
         </div>
-      `;
+      `).join("");
+    }
+
+    async function showTop3Triplets(){
+      const payload = getFormData();
+
+      resultHero.style.display = "block";
+      loadingBlock.style.display = "grid";
+      rankGrid.innerHTML = "";
       nextBtn.disabled = true;
       nextBtn.textContent = "Génération…";
 
-      // simulate loading
-      await new Promise(r => setTimeout(r, 900));
+      // Ici tu brancheras ton webhook n8n pour les vrais résultats.
+      // Pour l’instant : rendu UI final “pétant” avec Top 3 packs.
+      await new Promise(r => setTimeout(r, 650));
+      const triplets = buildTripletsDemo(payload);
 
-      const dest = document.getElementById('destination')?.value?.trim() || "Ta destination";
-      const inD = document.getElementById('checkInDate')?.value?.trim() || "—";
-      const outD = document.getElementById('checkOutDate')?.value?.trim() || "—";
-
-      // Demo results (à remplacer par réponse n8n)
-      cards.innerHTML = `
-        <div class="card">
-          <h3>Top 3 Vols <span class="tag">optimisé</span></h3>
-          <div class="muted">1) Vol direct • matin • prix indicatif : <b>—</b></div>
-          <div class="muted">2) 1 escale courte • meilleur rapport qualité/prix : <b>—</b></div>
-          <div class="muted">3) Option flexible • retour confortable : <b>—</b></div>
-        </div>
-
-        <div class="card">
-          <h3>Top 3 Hôtels <span class="tag">bien placés</span></h3>
-          <div class="muted">1) Centre-ville • note élevée • prix : <b>prix indispo</b></div>
-          <div class="muted">2) Quartier premium • bon confort • prix : <b>prix indispo</b></div>
-          <div class="muted">3) Bon budget • propre • prix : <b>prix indispo</b></div>
-        </div>
-
-        <div class="card">
-          <h3>Top 3 Activités <span class="tag">à faire</span></h3>
-          <div class="muted">1) Incontournable local • durée : <b>—</b></div>
-          <div class="muted">2) Expérience premium • réservation conseillée</div>
-          <div class="muted">3) Spot photo + ambiance • parfait pour ${escapeHtml(dest)}</div>
-        </div>
-
-        <div class="card">
-          <h3>Résumé <span class="tag">${escapeHtml(inD)} → ${escapeHtml(outD)}</span></h3>
-          <div class="muted">Ton Top 3 s’affiche ici en démo. La prochaine étape est de brancher ce bloc aux résultats réels (n8n) pour afficher les vrais prix et liens.</div>
-        </div>
-      `;
+      loadingBlock.style.display = "none";
+      renderTriplets(triplets, payload);
 
       nextBtn.disabled = false;
-      nextBtn.textContent = "Relancer / Modifier";
+      nextBtn.textContent = "Régénérer";
     }
-
-    // live recap updates
-    ["destination","checkInDate","checkOutDate","adults","children","budget","style"].forEach(id => {
-      const el = document.getElementById(id);
-      if(el) el.addEventListener("change", updateRecap);
-      if(el) el.addEventListener("input", updateRecap);
-    });
-
-    showStep(1);
-    updateRecap();
   </script>
 </body>
 </html>
