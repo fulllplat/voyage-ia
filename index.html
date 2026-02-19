@@ -1,0 +1,1148 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Travel Here — Offre premium</title>
+  <meta name="description" content="Travel Here : Remplis le formulaire. Paiement rapide. Reçois ton Top 3 (vols + hôtels + activités) immédiatement après paiement." />
+
+  <style>
+    :root{
+      --text: rgba(255,255,255,.94);
+      --muted: rgba(255,255,255,.74);
+      --muted2: rgba(255,255,255,.58);
+
+      --card: rgba(255,255,255,.12);
+      --stroke: rgba(255,255,255,.20);
+
+      --accent: #60A5FA;   /* sky */
+      --accent2:#34D399;   /* mint */
+      --danger:#FB7185;
+
+      --shadow: 0 22px 64px rgba(0,0,0,.45);
+      --r: 18px;
+      --r2: 14px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:#050711;
+      overflow-x:hidden;
+    }
+
+    /* ======= Premium travel slideshow background ======= */
+    .bg{ position:fixed; inset:0; z-index:-3; background:#050711; }
+    .bg .slide{
+      position:absolute; inset:0;
+      background-size:cover;
+      background-position:center;
+      opacity:0;
+      transform: scale(1.06);
+      animation: slideShow 30s infinite;
+      filter: saturate(1.12) contrast(1.06);
+    }
+
+    .bg .slide:nth-child(1){ background-image:url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2200&q=80"); animation-delay:0s; }
+    .bg .slide:nth-child(2){ background-image:url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=2200&q=80"); animation-delay:6s; }
+    .bg .slide:nth-child(3){ background-image:url("https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=2200&q=80"); animation-delay:12s; }
+    .bg .slide:nth-child(4){ background-image:url("https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=2200&q=80"); animation-delay:18s; }
+    .bg .slide:nth-child(5){ background-image:url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=80"); animation-delay:24s; }
+
+    @keyframes slideShow{
+      0%{opacity:0}
+      10%{opacity:1}
+      25%{opacity:1}
+      35%{opacity:0}
+      100%{opacity:0}
+    }
+
+    .overlay{
+      position:fixed; inset:0; z-index:-2;
+      background:
+        radial-gradient(900px 600px at 20% 10%, rgba(96,165,250,.22), transparent 60%),
+        radial-gradient(900px 600px at 85% 30%, rgba(52,211,153,.16), transparent 60%),
+        linear-gradient(180deg, rgba(3,7,18,.52), rgba(3,7,18,.40));
+    }
+
+    .noise{
+      pointer-events:none;
+      position:fixed; inset:0; z-index:-1;
+      opacity:.08;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay;
+      animation: noiseShift 10s linear infinite;
+    }
+    @keyframes noiseShift{
+      0%{transform:translate3d(0,0,0)}
+      100%{transform:translate3d(-80px,60px,0)}
+    }
+
+    /* ======= Layout ======= */
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 18px 12px;
+    }
+
+    .shell{
+      width: min(1060px, 100%);
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 900px){
+      .shell{grid-template-columns: 1fr;}
+    }
+
+    .panel{
+      border-radius: var(--r);
+      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.10));
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      overflow:hidden;
+      transform: translateY(0);
+      transition: transform .25s ease, border-color .25s ease;
+      position:relative;
+    }
+    .panel:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.26); }
+
+    .left{ padding: 22px 18px; }
+    .right{ padding: 18px 16px; }
+
+    /* Brand (qualitatif, pas répété) */
+    .brand{
+      font-weight: 1000;
+      letter-spacing: -1.3px;
+      font-size: clamp(34px, 4.4vw, 56px);
+      line-height: 1.02;
+      margin: 4px 0 10px;
+    }
+    .brandSub{
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.5;
+      margin: 0 0 10px;
+      max-width: 58ch;
+    }
+    .logoDot{
+      width:10px; height:10px; border-radius:50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 7px rgba(96,165,250,.12);
+      display:inline-block;
+      transform: translateY(-2px);
+      margin-right:10px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(96,165,250,.16);
+      border: 1px solid rgba(96,165,250,.26);
+      color: rgba(255,255,255,.92);
+      font-size: 13px;
+      letter-spacing:.2px;
+      user-select:none;
+    }
+    .dot{
+      width:8px; height:8px; border-radius:50%;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(52,211,153,.18);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{transform:scale(1); opacity:1}
+      50%{transform:scale(1.25); opacity:.72}
+    }
+
+    h1{
+      margin: 10px 0 8px;
+      font-size: clamp(22px, 2.6vw, 34px);
+      line-height: 1.08;
+      letter-spacing:-.5px;
+    }
+    .sub{
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 15.5px;
+      line-height:1.55;
+      max-width: 62ch;
+    }
+
+    .priceRow{
+      margin-top: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 12px 12px;
+      border-radius: var(--r2);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .priceRow b{font-size: 14px}
+    .priceTag{
+      font-weight: 1000;
+      font-size: 18px;
+      letter-spacing:-.3px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(52,211,153,.16);
+      border: 1px solid rgba(52,211,153,.26);
+    }
+    .instant{
+      margin-top: 10px;
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      color: rgba(255,255,255,.74);
+      font-size: 12px;
+    }
+    .instant span{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    /* Steps */
+    .steps{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 520px){ .steps{grid-template-columns:1fr} }
+
+    .step{
+      padding: 12px 12px;
+      border-radius: var(--r2);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      display:flex;
+      gap:10px;
+      transition: transform .22s ease, background .22s ease, border-color .22s ease;
+    }
+    .step:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.11);
+      border-color: rgba(255,255,255,.18);
+    }
+    .num{
+      width:28px; height:28px; border-radius:10px;
+      display:grid; place-items:center;
+      background: rgba(96,165,250,.18);
+      border: 1px solid rgba(96,165,250,.30);
+      color: rgba(255,255,255,.96);
+      font-weight:1000;
+      font-size: 13px;
+      flex: 0 0 auto;
+    }
+    .step b{font-size: 13.5px}
+    .step p{
+      margin: 2px 0 0;
+      color: var(--muted2);
+      font-size: 12.7px;
+      line-height:1.35;
+    }
+
+    /* Form header */
+    .topLine{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      margin-bottom: 8px;
+    }
+    .topLine h2{ margin:0; font-size: 16px; letter-spacing:-.2px; }
+    .hint{ margin-top:2px; color: var(--muted2); font-size: 12.5px; }
+
+    form{ display:grid; gap: 12px; margin-top: 10px; }
+
+    .grid2{ display:grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 680px){ .grid2{grid-template-columns:1fr;} }
+
+    label{
+      display:block;
+      font-size: 12.5px;
+      color: rgba(255,255,255,.82);
+      margin-bottom: 6px;
+    }
+    .field{position:relative;}
+
+    /* Modern inputs */
+    input, textarea{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.92);
+      outline:none;
+      transition: border-color .18s ease, background .18s ease, box-shadow .18s ease, transform .18s ease;
+      backdrop-filter: blur(10px);
+    }
+    textarea{min-height: 84px; resize: vertical}
+    input::placeholder, textarea::placeholder{color: rgba(255,255,255,.52)}
+    input:focus, textarea:focus{
+      border-color: rgba(96,165,250,.55);
+      box-shadow: 0 0 0 4px rgba(96,165,250,.18);
+      background: rgba(0,0,0,.22);
+      transform: translateY(-1px);
+    }
+
+    /* Date inputs: we keep native on mobile, custom on desktop */
+    .dateInput{
+      padding-right: 42px;
+      cursor:pointer;
+    }
+    .calIcon{
+      position:absolute;
+      right: 12px;
+      top: 36px;
+      width: 20px;
+      height: 20px;
+      opacity:.85;
+      pointer-events:none;
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,.25));
+    }
+
+    /* Modern "style" pills */
+    .pillGroup{ display:flex; flex-wrap:wrap; gap: 8px; margin-top: 8px; }
+    .pill{
+      cursor:pointer; user-select:none;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.90);
+      font-size: 13px;
+      font-weight: 900;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+    }
+    .pill:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
+    .pill[data-on="1"]{ background: rgba(96,165,250,.18); border-color: rgba(96,165,250,.34); }
+    .sr{position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;}
+
+    /* Chips */
+    .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
+    .chip{
+      cursor:pointer; user-select:none;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.90);
+      font-size: 12.5px;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+    }
+    .chip:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
+    .chip[data-on="1"]{ background: rgba(96,165,250,.18); border-color: rgba(96,165,250,.32); }
+
+    /* Autocomplete dropdown */
+    .suggest{
+      position:absolute;
+      top: calc(100% + 8px);
+      left:0; right:0;
+      background: rgba(10,12,20,.86);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 14px;
+      overflow:hidden;
+      box-shadow: 0 18px 44px rgba(0,0,0,.45);
+      display:none;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+    }
+    .suggest button{
+      width:100%;
+      text-align:left;
+      border:0;
+      background: transparent;
+      color: rgba(255,255,255,.92);
+      padding: 10px 12px;
+      cursor:pointer;
+      font-size: 13.5px;
+      transition: background .14s ease;
+    }
+    .suggest button:hover{ background: rgba(96,165,250,.14); }
+    .suggest .muted{ color: rgba(255,255,255,.60); font-size:12px; }
+    .suggest .tag{
+      display:inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(96,165,250,.16);
+      border: 1px solid rgba(96,165,250,.26);
+      color: rgba(255,255,255,.86);
+      margin-left: 8px;
+    }
+
+    /* CTA */
+    .btn{
+      border:0;
+      width:100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 1000;
+      letter-spacing:.2px;
+      color:white;
+      background: linear-gradient(135deg, rgba(96,165,250,1), rgba(52,211,153,.95));
+      box-shadow: 0 14px 38px rgba(0,0,0,.26);
+      cursor:pointer;
+      transition: transform .16s ease, filter .16s ease;
+    }
+    .btn:hover{transform: translateY(-1px); filter: brightness(1.03)}
+    .btn:active{transform: translateY(0px); filter: brightness(.98)}
+    .btn[disabled]{opacity:.65; cursor:not-allowed}
+
+    .fine{ margin: 10px 0 0; color: rgba(255,255,255,.62); font-size: 12px; line-height:1.35; }
+
+    .toast{
+      display:none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.92);
+      font-size: 12.8px;
+      line-height:1.35;
+      backdrop-filter: blur(10px);
+    }
+    .toast.ok{ border-color: rgba(52,211,153,.30); background: rgba(52,211,153,.12); }
+    .toast.err{ border-color: rgba(251,113,133,.32); background: rgba(251,113,133,.12); }
+
+    /* ======= Custom Date Picker (desktop) ======= */
+    .dpBackdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 16px 12px;
+      z-index: 120;
+    }
+    .dp{
+      width: min(360px, 100%);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.10));
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 30px 90px rgba(0,0,0,.55);
+      overflow:hidden;
+    }
+    .dpHeader{
+      padding: 12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.14);
+    }
+    .dpHeader b{ font-size: 14px; letter-spacing:-.2px; }
+    .dpNav{
+      display:flex; gap: 8px;
+    }
+    .dpBtn{
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.10);
+      color: rgba(255,255,255,.92);
+      width: 34px; height:34px;
+      border-radius: 12px;
+      cursor:pointer;
+    }
+    .dpGrid{
+      padding: 10px 12px 14px;
+    }
+    .dpWeek{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 8px;
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
+      text-align:center;
+    }
+    .dpDays{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+    .day{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.14);
+      color: rgba(255,255,255,.92);
+      border-radius: 12px;
+      height: 40px;
+      cursor:pointer;
+      font-weight: 900;
+      font-size: 13px;
+      transition: transform .14s ease, background .14s ease, border-color .14s ease;
+    }
+    .day:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); background: rgba(96,165,250,.14); }
+    .day[disabled]{ opacity:.35; cursor:not-allowed; }
+    .day.isToday{
+      border-color: rgba(52,211,153,.32);
+      background: rgba(52,211,153,.10);
+    }
+    .day.isSelected{
+      border-color: rgba(96,165,250,.45);
+      background: rgba(96,165,250,.22);
+    }
+
+    /* ======= Paywall modal (unchanged UI) ======= */
+    .modalBackdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 16px 12px;
+      z-index: 100;
+    }
+    .modal{
+      width: min(520px, 100%);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.10));
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 30px 90px rgba(0,0,0,.55);
+      overflow:hidden;
+      transform: translateY(8px);
+      animation: pop .18s ease-out forwards;
+    }
+    @keyframes pop{to{transform: translateY(0)}}
+    .modalHeader{
+      padding: 16px 16px 10px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .modalHeader h3{
+      margin:0;
+      font-size: 16px;
+      letter-spacing:-.2px;
+    }
+    .xBtn{
+      border:0;
+      background: rgba(255,255,255,.10);
+      color: rgba(255,255,255,.9);
+      border: 1px solid rgba(255,255,255,.16);
+      width: 34px; height:34px;
+      border-radius: 12px;
+      cursor:pointer;
+    }
+    .modalBody{ padding: 0 16px 16px; }
+    .summary{
+      padding: 12px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      margin-bottom: 12px;
+    }
+    .summary .row{
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+      margin: 6px 0;
+      color: rgba(255,255,255,.86);
+      font-size: 13.5px;
+    }
+    .summary .row span:last-child{ color: rgba(255,255,255,.92); font-weight:1000; }
+    .payButtons{ display:grid; gap: 10px; }
+    .primaryPayBtn{
+      width:100%;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.78);
+      color:white;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 1000;
+      letter-spacing:.2px;
+      cursor:pointer;
+      transition: transform .16s ease, filter .16s ease;
+    }
+    .primaryPayBtn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .secondaryPayBtn{
+      width:100%;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      color:white;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .16s ease, filter .16s ease;
+    }
+    .secondaryPayBtn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .payNote{
+      margin-top: 10px;
+      color: rgba(255,255,255,.60);
+      font-size: 12px;
+      line-height:1.35;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg">
+    <div class="slide"></div><div class="slide"></div><div class="slide"></div><div class="slide"></div><div class="slide"></div>
+  </div>
+  <div class="overlay"></div>
+  <div class="noise"></div>
+
+  <div class="wrap">
+    <div class="shell">
+
+      <!-- LEFT -->
+      <section class="panel left">
+        <div class="badge">
+          <span class="dot"></span>
+          <span>Service premium</span>
+        </div>
+
+        <div class="brand"><span class="logoDot"></span>Travel Here</div>
+        <p class="brandSub">
+          Un service premium livré <b>immédiatement après paiement</b> :
+          un Top 3 (vols + hôtels + activités) adapté à ton voyage.
+        </p>
+
+        <h1>Ton voyage, prêt en quelques minutes ✈️</h1>
+        <p class="sub">
+          Tu renseignes tes infos, tu confirmes le paiement, et tu reçois directement ton résultat par email.
+          Simple, clair, premium.
+        </p>
+
+        <div class="priceRow">
+          <div>
+            <b>Offre Premium — Top 3 complet</b><br/>
+            <span style="color:var(--muted2); font-size:12.5px;">Livraison immédiate après paiement</span>
+          </div>
+          <div class="priceTag">9,90€</div>
+        </div>
+
+        <div class="instant">
+          <span>⚡ Livraison immédiate</span>
+          <span>🔒 Paiement sécurisé</span>
+          <span>📩 Envoi par email</span>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="num">1</div>
+            <div><b>Tu remplis</b><p>Dates, budget, envies.</p></div>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <div><b>Paiement</b><p>Confirmation rapide.</p></div>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <div><b>Génération</b><p>Top 3 complet.</p></div>
+          </div>
+          <div class="step">
+            <div class="num">4</div>
+            <div><b>Réception</b><p>Immédiate après paiement.</p></div>
+          </div>
+        </div>
+
+        <p class="fine" style="margin-top:14px;">
+          Travel Here — pensé pour une expérience mobile premium.
+        </p>
+      </section>
+
+      <!-- RIGHT -->
+      <aside class="panel right">
+        <div class="topLine">
+          <div>
+            <h2>Formulaire</h2>
+            <div class="hint">Livraison immédiate après paiement ✅</div>
+          </div>
+          <div class="badge" style="background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18);">
+            <span style="opacity:.92">~ 45s</span>
+          </div>
+        </div>
+
+        <form id="tripForm">
+          <div class="grid2">
+            <div class="field">
+              <label for="origin">Ville de départ</label>
+              <input id="origin" name="origin" placeholder="Tape une ville (toutes disponibles)..." autocomplete="off" />
+              <div class="suggest" id="originSuggest"></div>
+            </div>
+
+            <div class="field">
+              <label for="destination">Destination</label>
+              <input id="destination" name="destination" placeholder="Tape une ville (toutes disponibles)..." autocomplete="off" required />
+              <div class="suggest" id="destSuggest"></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">Ton email</label>
+            <input id="email" name="email" type="email" placeholder="ex: toi@gmail.com" required />
+          </div>
+
+          <div class="grid2">
+            <div class="field">
+              <label for="checkInDate">Date d’arrivée</label>
+              <!-- Custom picker: on desktop we open our calendar -->
+              <input id="checkInDate" name="checkInDate" class="dateInput" placeholder="Choisir une date" autocomplete="off" required />
+              <svg class="calIcon" viewBox="0 0 24 24" fill="none">
+                <path d="M7 2v3M17 2v3M3.5 9h17" stroke="white" stroke-opacity=".9" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M6 6h12a2.5 2.5 0 0 1 2.5 2.5V19A2.5 2.5 0 0 1 18 21.5H6A2.5 2.5 0 0 1 3.5 19V8.5A2.5 2.5 0 0 1 6 6Z" stroke="white" stroke-opacity=".9" stroke-width="1.6"/>
+              </svg>
+            </div>
+            <div class="field">
+              <label for="checkOutDate">Date de départ</label>
+              <input id="checkOutDate" name="checkOutDate" class="dateInput" placeholder="Choisir une date" autocomplete="off" required />
+              <svg class="calIcon" viewBox="0 0 24 24" fill="none">
+                <path d="M7 2v3M17 2v3M3.5 9h17" stroke="white" stroke-opacity=".9" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M6 6h12a2.5 2.5 0 0 1 2.5 2.5V19A2.5 2.5 0 0 1 18 21.5H6A2.5 2.5 0 0 1 3.5 19V8.5A2.5 2.5 0 0 1 6 6Z" stroke="white" stroke-opacity=".9" stroke-width="1.6"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="field">
+              <label for="adults">Adultes</label>
+              <input id="adults" name="adults" type="number" min="1" max="9" value="2" />
+            </div>
+            <div class="field">
+              <label for="children">Enfants</label>
+              <input id="children" name="children" type="number" min="0" max="9" value="0" />
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="field">
+              <label for="roomQuantity">Chambres</label>
+              <input id="roomQuantity" name="roomQuantity" type="number" min="1" max="9" value="1" />
+            </div>
+            <div class="field">
+              <label for="budget">Budget total (optionnel)</label>
+              <input id="budget" name="budget" type="number" min="0" step="50" placeholder="Ex : 1200" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Style</label>
+            <div class="pillGroup" id="stylePills">
+              <span class="pill" data-value="balanced" data-on="1">Équilibré</span>
+              <span class="pill" data-value="budget">Petit budget</span>
+              <span class="pill" data-value="comfort">Confort</span>
+              <span class="pill" data-value="luxury">Luxe</span>
+            </div>
+            <input class="sr" id="style" name="style" value="balanced" />
+          </div>
+
+          <div class="field">
+            <label>Centres d’intérêt (optionnel)</label>
+            <div class="chips" id="chips">
+              <span class="chip" data-value="culture">Culture</span>
+              <span class="chip" data-value="food">Food</span>
+              <span class="chip" data-value="nature">Nature</span>
+              <span class="chip" data-value="nightlife">Sorties</span>
+              <span class="chip" data-value="shopping">Shopping</span>
+              <span class="chip" data-value="relax">Détente</span>
+            </div>
+            <input class="sr" id="interests" name="interests" value="" />
+          </div>
+
+          <div class="field">
+            <label for="notes">Notes (optionnel)</label>
+            <textarea id="notes" name="notes" placeholder="Ex : hôtel proche centre, départ le matin, pas trop de marche…"></textarea>
+          </div>
+
+          <button class="btn" id="openPaywallBtn" type="submit">
+            Continuer → Paiement
+          </button>
+
+          <div class="toast" id="toast"></div>
+
+          <p class="fine">
+            Travel Here — service livré immédiatement après paiement.
+          </p>
+        </form>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- Custom Date Picker -->
+  <div class="dpBackdrop" id="dpBackdrop">
+    <div class="dp" role="dialog" aria-modal="true" aria-label="Choisir une date">
+      <div class="dpHeader">
+        <b id="dpTitle">Mois</b>
+        <div class="dpNav">
+          <button class="dpBtn" id="dpPrev" type="button">‹</button>
+          <button class="dpBtn" id="dpNext" type="button">›</button>
+        </div>
+      </div>
+      <div class="dpGrid">
+        <div class="dpWeek">
+          <div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div><div>D</div>
+        </div>
+        <div class="dpDays" id="dpDays"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paywall Modal -->
+  <div class="modalBackdrop" id="paywall">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Paiement premium">
+      <div class="modalHeader">
+        <div>
+          <h3>Paiement — Travel Here</h3>
+          <div class="hint" style="margin-top:4px">Livraison immédiate après paiement</div>
+        </div>
+        <button class="xBtn" id="closePaywall" aria-label="Fermer">✕</button>
+      </div>
+
+      <div class="modalBody">
+        <div class="summary" id="summaryBox">
+          <div class="row"><span>Produit</span><span>Top 3 Travel Here</span></div>
+          <div class="row"><span>Prix</span><span>9,90€</span></div>
+          <div class="row"><span>Livraison</span><span>Immédiate</span></div>
+        </div>
+
+        <div class="payButtons">
+          <button class="primaryPayBtn" id="primaryPayBtn" type="button">Payer maintenant</button>
+          <button class="secondaryPayBtn" id="secondaryPayBtn" type="button">Autre moyen de paiement</button>
+        </div>
+
+        <div class="payNote">
+          Après paiement confirmé, tu reçois immédiatement ton service par email.
+        </div>
+
+        <div class="toast" id="payToast" style="margin-top:10px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ======== Style pills -> hidden input ========
+    const stylePills = document.getElementById('stylePills');
+    const styleInput = document.getElementById('style');
+    stylePills.addEventListener('click', (e) => {
+      const pill = e.target.closest('.pill');
+      if(!pill) return;
+      [...stylePills.querySelectorAll('.pill')].forEach(p => p.dataset.on = "0");
+      pill.dataset.on = "1";
+      styleInput.value = pill.dataset.value;
+    });
+
+    // ======== Interests chips -> CSV hidden input ========
+    const chips = document.getElementById('chips');
+    const interestsInput = document.getElementById('interests');
+    chips.addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if(!chip) return;
+      chip.dataset.on = chip.dataset.on === "1" ? "0" : "1";
+      const on = [...chips.querySelectorAll('.chip[data-on="1"]')].map(el => el.dataset.value);
+      interestsInput.value = on.join(',');
+    });
+
+    // ======== Cities autocomplete (ALL cities via OpenStreetMap Nominatim) ========
+    // Works globally without keys. Also fallback "Utiliser : ..." always exists.
+    function normalizeText(s){
+      return (s || "").toString().trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    async function fetchCitySuggestions(query){
+      const q = query.trim();
+      if(q.length < 2) return [];
+      const url = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=8&accept-language=fr&q=" + encodeURIComponent(q);
+      const res = await fetch(url, { headers: { "Accept": "application/json" } });
+      if(!res.ok) throw new Error("nominatim");
+      const data = await res.json();
+
+      // Map to readable labels
+      return data.map(item => {
+        const city = item.address?.city || item.address?.town || item.address?.village || item.address?.municipality || item.display_name?.split(",")[0] || "";
+        const country = item.address?.country || "";
+        return {
+          label: city ? `${city} — ${country}` : item.display_name,
+          value: city ? `${city}` : item.display_name
+        };
+      }).filter(x => x.value);
+    }
+
+    function attachSuggest(inputId, suggestId){
+      const input = document.getElementById(inputId);
+      const box = document.getElementById(suggestId);
+      let lastReq = 0;
+
+      function hide(){ box.style.display = "none"; box.innerHTML = ""; }
+
+      function render(items, rawInput){
+        const q = (rawInput || "").trim();
+        const fallback = q.length >= 2
+          ? `<button type="button" data-value="${q}">
+               <div>Utiliser : <strong>${q}</strong> <span class="muted">— (si non listé)</span></div>
+             </button>`
+          : "";
+
+        const htmlItems = items.map(it => `
+          <button type="button" data-value="${it.value}">
+            <div>${it.label}</div>
+          </button>
+        `).join("");
+
+        if(!htmlItems && !fallback){ hide(); return; }
+
+        box.innerHTML = htmlItems + (fallback ? `<div style="height:1px;background:rgba(255,255,255,.12)"></div>${fallback}` : "");
+        box.style.display = "block";
+      }
+
+      input.addEventListener("input", async () => {
+        const q = input.value;
+        const reqId = ++lastReq;
+
+        if(q.trim().length < 2){
+          render([], q);
+          return;
+        }
+
+        try{
+          const items = await fetchCitySuggestions(q);
+          if(reqId !== lastReq) return; // ignore stale
+          render(items, q);
+        }catch(e){
+          // If API fails, still show fallback
+          if(reqId !== lastReq) return;
+          render([], q);
+        }
+      });
+
+      box.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if(!btn) return;
+        input.value = btn.dataset.value;
+        hide();
+        input.dispatchEvent(new Event("change"));
+      });
+
+      document.addEventListener("click", (e) => {
+        if(e.target === input || box.contains(e.target)) return;
+        hide();
+      });
+
+      input.addEventListener("keydown", (e) => { if(e.key === "Escape") hide(); });
+    }
+
+    attachSuggest("origin", "originSuggest");
+    attachSuggest("destination", "destSuggest");
+
+    // ======== Custom Date Picker (desktop only) ========
+    const dpBackdrop = document.getElementById("dpBackdrop");
+    const dpTitle = document.getElementById("dpTitle");
+    const dpDays = document.getElementById("dpDays");
+    const dpPrev = document.getElementById("dpPrev");
+    const dpNext = document.getElementById("dpNext");
+
+    let activeDateInput = null;
+    let viewDate = new Date(); // month being viewed
+    let selectedDateISO = null;
+
+    const MONTHS_FR = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+
+    function pad(n){ return String(n).padStart(2,"0"); }
+    function toISO(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+    function startOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
+    function daysInMonth(d){ return new Date(d.getFullYear(), d.getMonth()+1, 0).getDate(); }
+
+    function openDatePicker(inputEl){
+      activeDateInput = inputEl;
+
+      // If input already has value, open that month
+      if(inputEl.value && /^\d{4}-\d{2}-\d{2}$/.test(inputEl.value)){
+        const [y,m,da] = inputEl.value.split("-").map(Number);
+        viewDate = new Date(y, m-1, 1);
+        selectedDateISO = inputEl.value;
+      } else {
+        viewDate = new Date();
+        selectedDateISO = null;
+      }
+
+      renderCalendar();
+      dpBackdrop.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeDatePicker(){
+      dpBackdrop.style.display = "none";
+      document.body.style.overflow = "";
+      activeDateInput = null;
+    }
+
+    function renderCalendar(){
+      const m = viewDate.getMonth();
+      const y = viewDate.getFullYear();
+      dpTitle.textContent = `${MONTHS_FR[m]} ${y}`;
+
+      dpDays.innerHTML = "";
+
+      const first = startOfMonth(viewDate);
+      const firstDow = (first.getDay() + 6) % 7; // Monday=0
+      const total = daysInMonth(viewDate);
+
+      // blanks
+      for(let i=0;i<firstDow;i++){
+        const blank = document.createElement("div");
+        blank.style.height = "40px";
+        dpDays.appendChild(blank);
+      }
+
+      const todayISO = toISO(new Date());
+
+      for(let day=1; day<=total; day++){
+        const d = new Date(y, m, day);
+        const iso = toISO(d);
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "day";
+        btn.textContent = String(day);
+
+        if(iso === todayISO) btn.classList.add("isToday");
+        if(selectedDateISO && iso === selectedDateISO) btn.classList.add("isSelected");
+
+        btn.addEventListener("click", () => {
+          selectedDateISO = iso;
+          if(activeDateInput){
+            activeDateInput.value = iso;
+            activeDateInput.dispatchEvent(new Event("change"));
+          }
+          closeDatePicker();
+        });
+
+        dpDays.appendChild(btn);
+      }
+    }
+
+    dpPrev.addEventListener("click", () => {
+      viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth()-1, 1);
+      renderCalendar();
+    });
+    dpNext.addEventListener("click", () => {
+      viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth()+1, 1);
+      renderCalendar();
+    });
+
+    dpBackdrop.addEventListener("click", (e) => {
+      if(e.target === dpBackdrop) closeDatePicker();
+    });
+
+    // Desktop: use custom picker. Mobile: keep native date input.
+    function isMobile(){
+      return window.matchMedia("(max-width: 768px)").matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+
+    const checkIn = document.getElementById("checkInDate");
+    const checkOut = document.getElementById("checkOutDate");
+
+    function enableDateUX(){
+      if(isMobile()){
+        // Use native date picker on mobile
+        checkIn.type = "date";
+        checkOut.type = "date";
+        checkIn.placeholder = "";
+        checkOut.placeholder = "";
+        return;
+      }
+      // Desktop custom picker
+      checkIn.type = "text";
+      checkOut.type = "text";
+      checkIn.addEventListener("click", () => openDatePicker(checkIn));
+      checkOut.addEventListener("click", () => openDatePicker(checkOut));
+      checkIn.addEventListener("keydown", (e) => e.preventDefault());
+      checkOut.addEventListener("keydown", (e) => e.preventDefault());
+    }
+    enableDateUX();
+    window.addEventListener("resize", () => enableDateUX());
+
+    // ======== Paywall flow (UI) ========
+    const form = document.getElementById("tripForm");
+    const toast = document.getElementById("toast");
+    const payToast = document.getElementById("payToast");
+    const paywall = document.getElementById("paywall");
+    const closePaywall = document.getElementById("closePaywall");
+    const primaryPayBtn = document.getElementById("primaryPayBtn");
+    const secondaryPayBtn = document.getElementById("secondaryPayBtn");
+    const summaryBox = document.getElementById("summaryBox");
+
+    const N8N_WEBHOOK_URL = "YOUR_N8N_WEBHOOK_URL_HERE";
+
+    function showToast(el, type, msg){
+      el.className = "toast " + (type === "ok" ? "ok" : "err");
+      el.textContent = msg;
+      el.style.display = "block";
+    }
+
+    function isValidDates(inDate, outDate){
+      try{
+        const a = new Date(inDate);
+        const b = new Date(outDate);
+        return b > a;
+      }catch(e){ return false; }
+    }
+
+    function openPaywall(summaryLines){
+      summaryBox.innerHTML = summaryLines.map(([k,v]) => (
+        `<div class="row"><span>${k}</span><span>${v}</span></div>`
+      )).join("");
+      payToast.style.display = "none";
+      paywall.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+    function closePaywallFn(){
+      paywall.style.display = "none";
+      document.body.style.overflow = "";
+    }
+    closePaywall.addEventListener("click", closePaywallFn);
+    paywall.addEventListener("click", (e) => { if(e.target === paywall) closePaywallFn(); });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      toast.style.display = "none";
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.adults = Number(data.adults || 2);
+      data.children = Number(data.children || 0);
+      data.roomQuantity = Number(data.roomQuantity || 1);
+
+      if(!isValidDates(data.checkInDate, data.checkOutDate)){
+        showToast(toast, "err", "Vérifie tes dates : la date de départ doit être après la date d’arrivée.");
+        return;
+      }
+
+      const summary = [
+        ["Produit", "Top 3 Travel Here"],
+        ["Prix", "9,90€"],
+        ["Livraison", "Immédiate"],
+        ["Destination", data.destination || "—"],
+        ["Dates", `${data.checkInDate} → ${data.checkOutDate}`],
+        ["Voyageurs", `${data.adults} adultes, ${data.children} enfants`],
+        ["Style", data.style || "balanced"]
+      ];
+
+      openPaywall(summary);
+    });
+
+    function paymentNotConfigured(){
+      showToast(payToast, "err", "Paiement réel non configuré (UI premium OK). Quand tu veux, je te branche Stripe/Apple Pay pour un vrai paiement.");
+    }
+    primaryPayBtn.addEventListener("click", paymentNotConfigured);
+    secondaryPayBtn.addEventListener("click", paymentNotConfigured);
+  </script>
+</body>
+</html>
