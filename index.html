@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Travel Here — Offre premium</title>
-  <meta name="description" content="Travel Here : Remplis le formulaire. Paiement rapide. Reçois ton Top 3 (vols + hôtels + activités) immédiatement après paiement." />
+  <title>Travel Here — Formulaire</title>
+  <meta name="description" content="Travel Here : formulaire premium pour générer une offre de voyage (vols, hôtels, activités)." />
 
   <style>
     :root{
@@ -45,7 +45,6 @@
       animation: slideShow 30s infinite;
       filter: saturate(1.12) contrast(1.06);
     }
-
     .bg .slide:nth-child(1){ background-image:url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2200&q=80"); animation-delay:0s; }
     .bg .slide:nth-child(2){ background-image:url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=2200&q=80"); animation-delay:6s; }
     .bg .slide:nth-child(3){ background-image:url("https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=2200&q=80"); animation-delay:12s; }
@@ -117,7 +116,7 @@
     .left{ padding: 22px 18px; }
     .right{ padding: 18px 16px; }
 
-    /* Brand (qualitatif, pas répété) */
+    /* Brand */
     .brand{
       font-weight: 1000;
       letter-spacing: -1.3px;
@@ -215,16 +214,15 @@
       border: 1px solid rgba(255,255,255,.14);
     }
 
-    /* Steps */
-    .steps{
+    .stepsLeft{
       margin-top: 12px;
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
-    @media (max-width: 520px){ .steps{grid-template-columns:1fr} }
+    @media (max-width: 520px){ .stepsLeft{grid-template-columns:1fr} }
 
-    .step{
+    .stepCard{
       padding: 12px 12px;
       border-radius: var(--r2);
       background: rgba(255,255,255,.08);
@@ -233,7 +231,7 @@
       gap:10px;
       transition: transform .22s ease, background .22s ease, border-color .22s ease;
     }
-    .step:hover{
+    .stepCard:hover{
       transform: translateY(-2px);
       background: rgba(255,255,255,.11);
       border-color: rgba(255,255,255,.18);
@@ -248,8 +246,8 @@
       font-size: 13px;
       flex: 0 0 auto;
     }
-    .step b{font-size: 13.5px}
-    .step p{
+    .stepCard b{font-size: 13.5px}
+    .stepCard p{
       margin: 2px 0 0;
       color: var(--muted2);
       font-size: 12.7px;
@@ -277,7 +275,6 @@
     }
     .field{position:relative;}
 
-    /* Modern inputs */
     input, textarea{
       width:100%;
       padding: 12px 12px;
@@ -289,7 +286,7 @@
       transition: border-color .18s ease, background .18s ease, box-shadow .18s ease, transform .18s ease;
       backdrop-filter: blur(10px);
     }
-    textarea{min-height: 84px; resize: vertical}
+    textarea{min-height: 92px; resize: vertical}
     input::placeholder, textarea::placeholder{color: rgba(255,255,255,.52)}
     input:focus, textarea:focus{
       border-color: rgba(96,165,250,.55);
@@ -298,7 +295,6 @@
       transform: translateY(-1px);
     }
 
-    /* Date inputs: we keep native on mobile, custom on desktop */
     .dateInput{
       padding-right: 42px;
       cursor:pointer;
@@ -331,7 +327,7 @@
     .pill[data-on="1"]{ background: rgba(96,165,250,.18); border-color: rgba(96,165,250,.34); }
     .sr{position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;}
 
-    /* Chips */
+    /* Interests chips */
     .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
     .chip{
       cursor:pointer; user-select:none;
@@ -373,16 +369,6 @@
     }
     .suggest button:hover{ background: rgba(96,165,250,.14); }
     .suggest .muted{ color: rgba(255,255,255,.60); font-size:12px; }
-    .suggest .tag{
-      display:inline-block;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(96,165,250,.16);
-      border: 1px solid rgba(96,165,250,.26);
-      color: rgba(255,255,255,.86);
-      margin-left: 8px;
-    }
 
     /* CTA */
     .btn{
@@ -400,24 +386,75 @@
     }
     .btn:hover{transform: translateY(-1px); filter: brightness(1.03)}
     .btn:active{transform: translateY(0px); filter: brightness(.98)}
-    .btn[disabled]{opacity:.65; cursor:not-allowed}
+
+    .secondaryBtn{
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      color:white;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .16s ease, filter .16s ease;
+      width:100%;
+    }
+    .secondaryBtn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
 
     .fine{ margin: 10px 0 0; color: rgba(255,255,255,.62); font-size: 12px; line-height:1.35; }
 
-    .toast{
-      display:none;
-      margin-top: 10px;
+    /* Progress */
+    .progressWrap{
+      margin: 10px 0 10px;
       padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.18);
-      color: rgba(255,255,255,.92);
-      font-size: 12.8px;
-      line-height:1.35;
-      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
     }
-    .toast.ok{ border-color: rgba(52,211,153,.30); background: rgba(52,211,153,.12); }
-    .toast.err{ border-color: rgba(251,113,133,.32); background: rgba(251,113,133,.12); }
+    .progressTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      color: rgba(255,255,255,.76);
+      font-size: 12px;
+    }
+    .bar{
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      margin-top: 8px;
+      overflow:hidden;
+    }
+    .bar > div{
+      height:100%;
+      width:33%;
+      border-radius:999px;
+      background: linear-gradient(135deg, rgba(96,165,250,1), rgba(52,211,153,.95));
+      transition: width .25s ease;
+    }
+
+    /* Recap box */
+    .recap{
+      padding: 12px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      display:grid;
+      gap: 6px;
+      font-size: 13px;
+      color: rgba(255,255,255,.86);
+    }
+    .recap .row{
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+      color: rgba(255,255,255,.86);
+    }
+    .recap .row span:last-child{
+      font-weight:1000;
+      color: rgba(255,255,255,.92);
+      text-align:right;
+    }
 
     /* ======= Custom Date Picker (desktop) ======= */
     .dpBackdrop{
@@ -447,9 +484,7 @@
       border-bottom: 1px solid rgba(255,255,255,.14);
     }
     .dpHeader b{ font-size: 14px; letter-spacing:-.2px; }
-    .dpNav{
-      display:flex; gap: 8px;
-    }
+    .dpNav{ display:flex; gap: 8px; }
     .dpBtn{
       border: 1px solid rgba(255,255,255,.16);
       background: rgba(255,255,255,.10);
@@ -458,9 +493,7 @@
       border-radius: 12px;
       cursor:pointer;
     }
-    .dpGrid{
-      padding: 10px 12px 14px;
-    }
+    .dpGrid{ padding: 10px 12px 14px; }
     .dpWeek{
       display:grid;
       grid-template-columns: repeat(7, 1fr);
@@ -487,17 +520,10 @@
       transition: transform .14s ease, background .14s ease, border-color .14s ease;
     }
     .day:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); background: rgba(96,165,250,.14); }
-    .day[disabled]{ opacity:.35; cursor:not-allowed; }
-    .day.isToday{
-      border-color: rgba(52,211,153,.32);
-      background: rgba(52,211,153,.10);
-    }
-    .day.isSelected{
-      border-color: rgba(96,165,250,.45);
-      background: rgba(96,165,250,.22);
-    }
+    .day.isToday{ border-color: rgba(52,211,153,.32); background: rgba(52,211,153,.10); }
+    .day.isSelected{ border-color: rgba(96,165,250,.45); background: rgba(96,165,250,.22); }
 
-    /* ======= Paywall modal (unchanged UI) ======= */
+    /* Paywall (optionnel) */
     .modalBackdrop{
       position:fixed; inset:0;
       background: rgba(0,0,0,.55);
@@ -526,11 +552,7 @@
       justify-content:space-between;
       gap: 10px;
     }
-    .modalHeader h3{
-      margin:0;
-      font-size: 16px;
-      letter-spacing:-.2px;
-    }
+    .modalHeader h3{ margin:0; font-size: 16px; letter-spacing:-.2px; }
     .xBtn{
       border:0;
       background: rgba(255,255,255,.10);
@@ -557,32 +579,6 @@
       font-size: 13.5px;
     }
     .summary .row span:last-child{ color: rgba(255,255,255,.92); font-weight:1000; }
-    .payButtons{ display:grid; gap: 10px; }
-    .primaryPayBtn{
-      width:100%;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.78);
-      color:white;
-      padding: 12px 14px;
-      border-radius: 14px;
-      font-weight: 1000;
-      letter-spacing:.2px;
-      cursor:pointer;
-      transition: transform .16s ease, filter .16s ease;
-    }
-    .primaryPayBtn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
-    .secondaryPayBtn{
-      width:100%;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.10);
-      color:white;
-      padding: 12px 14px;
-      border-radius: 14px;
-      font-weight: 900;
-      cursor:pointer;
-      transition: transform .16s ease, filter .16s ease;
-    }
-    .secondaryPayBtn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
     .payNote{
       margin-top: 10px;
       color: rgba(255,255,255,.60);
@@ -611,14 +607,12 @@
 
         <div class="brand"><span class="logoDot"></span>Travel Here</div>
         <p class="brandSub">
-          Un service premium livré <b>immédiatement après paiement</b> :
-          un Top 3 (vols + hôtels + activités) adapté à ton voyage.
+          Remplis le formulaire, confirme ton paiement, et tu reçois ton Top 3 (vols + hôtels + activités) immédiatement.
         </p>
 
         <h1>Ton voyage, prêt en quelques minutes ✈️</h1>
         <p class="sub">
-          Tu renseignes tes infos, tu confirmes le paiement, et tu reçois directement ton résultat par email.
-          Simple, clair, premium.
+          Mobile-first, simple, premium. On te génère une proposition adaptée à ton budget et tes envies.
         </p>
 
         <div class="priceRow">
@@ -635,22 +629,22 @@
           <span>📩 Envoi par email</span>
         </div>
 
-        <div class="steps">
-          <div class="step">
+        <div class="stepsLeft">
+          <div class="stepCard">
             <div class="num">1</div>
-            <div><b>Tu remplis</b><p>Dates, budget, envies.</p></div>
+            <div><b>Voyage</b><p>Villes + dates</p></div>
           </div>
-          <div class="step">
+          <div class="stepCard">
             <div class="num">2</div>
-            <div><b>Paiement</b><p>Confirmation rapide.</p></div>
+            <div><b>Préférences</b><p>Budget + style</p></div>
           </div>
-          <div class="step">
+          <div class="stepCard">
             <div class="num">3</div>
-            <div><b>Génération</b><p>Top 3 complet.</p></div>
+            <div><b>Finalisation</b><p>Email + note</p></div>
           </div>
-          <div class="step">
-            <div class="num">4</div>
-            <div><b>Réception</b><p>Immédiate après paiement.</p></div>
+          <div class="stepCard">
+            <div class="num">✓</div>
+            <div><b>Réception</b><p>Immédiate</p></div>
           </div>
         </div>
 
@@ -664,109 +658,140 @@
         <div class="topLine">
           <div>
             <h2>Formulaire</h2>
-            <div class="hint">Livraison immédiate après paiement ✅</div>
+            <div class="hint">3 étapes • livraison immédiate après paiement ✅</div>
           </div>
           <div class="badge" style="background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18);">
             <span style="opacity:.92">~ 45s</span>
           </div>
         </div>
 
+        <!-- Progress -->
+        <div class="progressWrap">
+          <div class="progressTop">
+            <span id="stepLabel">Étape 1/3</span>
+            <span id="stepHint">Voyage</span>
+          </div>
+          <div class="bar"><div id="progressBar"></div></div>
+        </div>
+
         <form id="tripForm">
-          <div class="grid2">
-            <div class="field">
-              <label for="origin">Ville de départ</label>
-              <input id="origin" name="origin" placeholder="Tape une ville (toutes disponibles)..." autocomplete="off" />
-              <div class="suggest" id="originSuggest"></div>
+          <!-- STEP 1 -->
+          <div class="step" data-step="1">
+            <div class="grid2">
+              <div class="field">
+                <label for="origin">Ville de départ</label>
+                <input id="origin" name="origin" placeholder="Tape une ville (toutes disponibles)..." autocomplete="off" />
+                <div class="suggest" id="originSuggest"></div>
+              </div>
+
+              <div class="field">
+                <label for="destination">Destination</label>
+                <input id="destination" name="destination" placeholder="Tape une ville (toutes disponibles)..." autocomplete="off" required />
+                <div class="suggest" id="destSuggest"></div>
+              </div>
+            </div>
+
+            <div class="grid2">
+              <div class="field">
+                <label for="checkInDate">Date d’arrivée</label>
+                <input id="checkInDate" name="checkInDate" class="dateInput" placeholder="Choisir une date" autocomplete="off" required />
+                <svg class="calIcon" viewBox="0 0 24 24" fill="none">
+                  <path d="M7 2v3M17 2v3M3.5 9h17" stroke="white" stroke-opacity=".9" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M6 6h12a2.5 2.5 0 0 1 2.5 2.5V19A2.5 2.5 0 0 1 18 21.5H6A2.5 2.5 0 0 1 3.5 19V8.5A2.5 2.5 0 0 1 6 6Z" stroke="white" stroke-opacity=".9" stroke-width="1.6"/>
+                </svg>
+              </div>
+              <div class="field">
+                <label for="checkOutDate">Date de départ</label>
+                <input id="checkOutDate" name="checkOutDate" class="dateInput" placeholder="Choisir une date" autocomplete="off" required />
+                <svg class="calIcon" viewBox="0 0 24 24" fill="none">
+                  <path d="M7 2v3M17 2v3M3.5 9h17" stroke="white" stroke-opacity=".9" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M6 6h12a2.5 2.5 0 0 1 2.5 2.5V19A2.5 2.5 0 0 1 18 21.5H6A2.5 2.5 0 0 1 3.5 19V8.5A2.5 2.5 0 0 1 6 6Z" stroke="white" stroke-opacity=".9" stroke-width="1.6"/>
+                </svg>
+              </div>
+            </div>
+
+            <p class="fine">Astuce : sur mobile, le sélecteur de dates natif s’ouvre automatiquement.</p>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="step" data-step="2" style="display:none">
+            <div class="grid2">
+              <div class="field">
+                <label for="adults">Adultes</label>
+                <input id="adults" name="adults" type="number" min="1" max="9" value="2" />
+              </div>
+              <div class="field">
+                <label for="children">Enfants</label>
+                <input id="children" name="children" type="number" min="0" max="9" value="0" />
+              </div>
+            </div>
+
+            <div class="grid2">
+              <div class="field">
+                <label for="roomQuantity">Chambres</label>
+                <input id="roomQuantity" name="roomQuantity" type="number" min="1" max="9" value="1" />
+              </div>
+              <div class="field">
+                <label for="budget">Budget total (optionnel)</label>
+                <input id="budget" name="budget" type="number" min="0" step="50" placeholder="Ex : 1200" />
+              </div>
             </div>
 
             <div class="field">
-              <label for="destination">Destination</label>
-              <input id="destination" name="destination" placeholder="Tape une ville (toutes disponibles)..." autocomplete="off" required />
-              <div class="suggest" id="destSuggest"></div>
+              <label>Style</label>
+              <div class="pillGroup" id="stylePills">
+                <span class="pill" data-value="balanced" data-on="1">Équilibré</span>
+                <span class="pill" data-value="budget">Petit budget</span>
+                <span class="pill" data-value="comfort">Confort</span>
+                <span class="pill" data-value="luxury">Luxe</span>
+              </div>
+              <input class="sr" id="style" name="style" value="balanced" />
+            </div>
+
+            <div class="field">
+              <label>Centres d’intérêt (optionnel)</label>
+              <div class="chips" id="chips">
+                <span class="chip" data-value="culture">Culture</span>
+                <span class="chip" data-value="food">Food</span>
+                <span class="chip" data-value="nature">Nature</span>
+                <span class="chip" data-value="nightlife">Sorties</span>
+                <span class="chip" data-value="shopping">Shopping</span>
+                <span class="chip" data-value="relax">Détente</span>
+              </div>
+              <input class="sr" id="interests" name="interests" value="" />
             </div>
           </div>
 
-          <div class="field">
-            <label for="email">Ton email</label>
-            <input id="email" name="email" type="email" placeholder="ex: toi@gmail.com" required />
-          </div>
-
-          <div class="grid2">
+          <!-- STEP 3 -->
+          <div class="step" data-step="3" style="display:none">
             <div class="field">
-              <label for="checkInDate">Date d’arrivée</label>
-              <!-- Custom picker: on desktop we open our calendar -->
-              <input id="checkInDate" name="checkInDate" class="dateInput" placeholder="Choisir une date" autocomplete="off" required />
-              <svg class="calIcon" viewBox="0 0 24 24" fill="none">
-                <path d="M7 2v3M17 2v3M3.5 9h17" stroke="white" stroke-opacity=".9" stroke-width="1.6" stroke-linecap="round"/>
-                <path d="M6 6h12a2.5 2.5 0 0 1 2.5 2.5V19A2.5 2.5 0 0 1 18 21.5H6A2.5 2.5 0 0 1 3.5 19V8.5A2.5 2.5 0 0 1 6 6Z" stroke="white" stroke-opacity=".9" stroke-width="1.6"/>
-              </svg>
+              <label for="email">Ton email</label>
+              <input id="email" name="email" type="email" placeholder="ex: toi@gmail.com" required />
             </div>
+
             <div class="field">
-              <label for="checkOutDate">Date de départ</label>
-              <input id="checkOutDate" name="checkOutDate" class="dateInput" placeholder="Choisir une date" autocomplete="off" required />
-              <svg class="calIcon" viewBox="0 0 24 24" fill="none">
-                <path d="M7 2v3M17 2v3M3.5 9h17" stroke="white" stroke-opacity=".9" stroke-width="1.6" stroke-linecap="round"/>
-                <path d="M6 6h12a2.5 2.5 0 0 1 2.5 2.5V19A2.5 2.5 0 0 1 18 21.5H6A2.5 2.5 0 0 1 3.5 19V8.5A2.5 2.5 0 0 1 6 6Z" stroke="white" stroke-opacity=".9" stroke-width="1.6"/>
-              </svg>
+              <label for="notes">Notes (optionnel)</label>
+              <textarea id="notes" name="notes" placeholder="Ex : hôtel proche centre, départ le matin, pas trop de marche…"></textarea>
             </div>
-          </div>
 
-          <div class="grid2">
             <div class="field">
-              <label for="adults">Adultes</label>
-              <input id="adults" name="adults" type="number" min="1" max="9" value="2" />
-            </div>
-            <div class="field">
-              <label for="children">Enfants</label>
-              <input id="children" name="children" type="number" min="0" max="9" value="0" />
-            </div>
-          </div>
-
-          <div class="grid2">
-            <div class="field">
-              <label for="roomQuantity">Chambres</label>
-              <input id="roomQuantity" name="roomQuantity" type="number" min="1" max="9" value="1" />
-            </div>
-            <div class="field">
-              <label for="budget">Budget total (optionnel)</label>
-              <input id="budget" name="budget" type="number" min="0" step="50" placeholder="Ex : 1200" />
+              <label>Récapitulatif</label>
+              <div class="recap" id="recapBox">
+                <div class="row"><span>Destination</span><span>—</span></div>
+                <div class="row"><span>Dates</span><span>—</span></div>
+                <div class="row"><span>Voyageurs</span><span>—</span></div>
+                <div class="row"><span>Style</span><span>—</span></div>
+                <div class="row"><span>Budget</span><span>—</span></div>
+              </div>
+              <p class="fine">Après paiement confirmé, tu reçois ton email immédiatement.</p>
             </div>
           </div>
 
-          <div class="field">
-            <label>Style</label>
-            <div class="pillGroup" id="stylePills">
-              <span class="pill" data-value="balanced" data-on="1">Équilibré</span>
-              <span class="pill" data-value="budget">Petit budget</span>
-              <span class="pill" data-value="comfort">Confort</span>
-              <span class="pill" data-value="luxury">Luxe</span>
-            </div>
-            <input class="sr" id="style" name="style" value="balanced" />
+          <!-- Navigation buttons -->
+          <div style="display:flex;gap:10px;">
+            <button type="button" class="secondaryBtn" id="backBtn" style="flex:1;display:none;">Retour</button>
+            <button type="button" class="btn" id="nextBtn" style="flex:2;">Continuer</button>
           </div>
-
-          <div class="field">
-            <label>Centres d’intérêt (optionnel)</label>
-            <div class="chips" id="chips">
-              <span class="chip" data-value="culture">Culture</span>
-              <span class="chip" data-value="food">Food</span>
-              <span class="chip" data-value="nature">Nature</span>
-              <span class="chip" data-value="nightlife">Sorties</span>
-              <span class="chip" data-value="shopping">Shopping</span>
-              <span class="chip" data-value="relax">Détente</span>
-            </div>
-            <input class="sr" id="interests" name="interests" value="" />
-          </div>
-
-          <div class="field">
-            <label for="notes">Notes (optionnel)</label>
-            <textarea id="notes" name="notes" placeholder="Ex : hôtel proche centre, départ le matin, pas trop de marche…"></textarea>
-          </div>
-
-          <button class="btn" id="openPaywallBtn" type="submit">
-            Continuer → Paiement
-          </button>
-
-          <div class="toast" id="toast"></div>
 
           <p class="fine">
             Travel Here — service livré immédiatement après paiement.
@@ -796,7 +821,7 @@
     </div>
   </div>
 
-  <!-- Paywall Modal -->
+  <!-- Paywall Modal (optionnel, non configuré) -->
   <div class="modalBackdrop" id="paywall">
     <div class="modal" role="dialog" aria-modal="true" aria-label="Paiement premium">
       <div class="modalHeader">
@@ -814,16 +839,10 @@
           <div class="row"><span>Livraison</span><span>Immédiate</span></div>
         </div>
 
-        <div class="payButtons">
-          <button class="primaryPayBtn" id="primaryPayBtn" type="button">Payer maintenant</button>
-          <button class="secondaryPayBtn" id="secondaryPayBtn" type="button">Autre moyen de paiement</button>
-        </div>
-
+        <button class="btn" id="payBtn" type="button">Payer maintenant</button>
         <div class="payNote">
-          Après paiement confirmé, tu reçois immédiatement ton service par email.
+          (Démo) Paiement réel non configuré. On le branchera à Stripe/Apple Pay ensuite.
         </div>
-
-        <div class="toast" id="payToast" style="margin-top:10px;"></div>
       </div>
     </div>
   </div>
@@ -838,6 +857,7 @@
       [...stylePills.querySelectorAll('.pill')].forEach(p => p.dataset.on = "0");
       pill.dataset.on = "1";
       styleInput.value = pill.dataset.value;
+      updateRecap();
     });
 
     // ======== Interests chips -> CSV hidden input ========
@@ -852,11 +872,6 @@
     });
 
     // ======== Cities autocomplete (ALL cities via OpenStreetMap Nominatim) ========
-    // Works globally without keys. Also fallback "Utiliser : ..." always exists.
-    function normalizeText(s){
-      return (s || "").toString().trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    }
-
     async function fetchCitySuggestions(query){
       const q = query.trim();
       if(q.length < 2) return [];
@@ -865,7 +880,6 @@
       if(!res.ok) throw new Error("nominatim");
       const data = await res.json();
 
-      // Map to readable labels
       return data.map(item => {
         const city = item.address?.city || item.address?.town || item.address?.village || item.address?.municipality || item.display_name?.split(",")[0] || "";
         const country = item.address?.country || "";
@@ -914,10 +928,9 @@
 
         try{
           const items = await fetchCitySuggestions(q);
-          if(reqId !== lastReq) return; // ignore stale
+          if(reqId !== lastReq) return;
           render(items, q);
         }catch(e){
-          // If API fails, still show fallback
           if(reqId !== lastReq) return;
           render([], q);
         }
@@ -928,6 +941,7 @@
         if(!btn) return;
         input.value = btn.dataset.value;
         hide();
+        updateRecap();
         input.dispatchEvent(new Event("change"));
       });
 
@@ -942,7 +956,7 @@
     attachSuggest("origin", "originSuggest");
     attachSuggest("destination", "destSuggest");
 
-    // ======== Custom Date Picker (desktop only) ========
+    // ======== Date Picker (desktop custom; mobile native) ========
     const dpBackdrop = document.getElementById("dpBackdrop");
     const dpTitle = document.getElementById("dpTitle");
     const dpDays = document.getElementById("dpDays");
@@ -950,11 +964,10 @@
     const dpNext = document.getElementById("dpNext");
 
     let activeDateInput = null;
-    let viewDate = new Date(); // month being viewed
+    let viewDate = new Date();
     let selectedDateISO = null;
 
     const MONTHS_FR = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
-
     function pad(n){ return String(n).padStart(2,"0"); }
     function toISO(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
     function startOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
@@ -963,7 +976,6 @@
     function openDatePicker(inputEl){
       activeDateInput = inputEl;
 
-      // If input already has value, open that month
       if(inputEl.value && /^\d{4}-\d{2}-\d{2}$/.test(inputEl.value)){
         const [y,m,da] = inputEl.value.split("-").map(Number);
         viewDate = new Date(y, m-1, 1);
@@ -990,12 +1002,10 @@
       dpTitle.textContent = `${MONTHS_FR[m]} ${y}`;
 
       dpDays.innerHTML = "";
-
       const first = startOfMonth(viewDate);
       const firstDow = (first.getDay() + 6) % 7; // Monday=0
       const total = daysInMonth(viewDate);
 
-      // blanks
       for(let i=0;i<firstDow;i++){
         const blank = document.createElement("div");
         blank.style.height = "40px";
@@ -1021,6 +1031,7 @@
           if(activeDateInput){
             activeDateInput.value = iso;
             activeDateInput.dispatchEvent(new Event("change"));
+            updateRecap();
           }
           closeDatePicker();
         });
@@ -1037,12 +1048,8 @@
       viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth()+1, 1);
       renderCalendar();
     });
+    dpBackdrop.addEventListener("click", (e) => { if(e.target === dpBackdrop) closeDatePicker(); });
 
-    dpBackdrop.addEventListener("click", (e) => {
-      if(e.target === dpBackdrop) closeDatePicker();
-    });
-
-    // Desktop: use custom picker. Mobile: keep native date input.
     function isMobile(){
       return window.matchMedia("(max-width: 768px)").matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
@@ -1052,14 +1059,12 @@
 
     function enableDateUX(){
       if(isMobile()){
-        // Use native date picker on mobile
         checkIn.type = "date";
         checkOut.type = "date";
         checkIn.placeholder = "";
         checkOut.placeholder = "";
         return;
       }
-      // Desktop custom picker
       checkIn.type = "text";
       checkOut.type = "text";
       checkIn.addEventListener("click", () => openDatePicker(checkIn));
@@ -1070,22 +1075,27 @@
     enableDateUX();
     window.addEventListener("resize", () => enableDateUX());
 
-    // ======== Paywall flow (UI) ========
-    const form = document.getElementById("tripForm");
-    const toast = document.getElementById("toast");
-    const payToast = document.getElementById("payToast");
-    const paywall = document.getElementById("paywall");
-    const closePaywall = document.getElementById("closePaywall");
-    const primaryPayBtn = document.getElementById("primaryPayBtn");
-    const secondaryPayBtn = document.getElementById("secondaryPayBtn");
-    const summaryBox = document.getElementById("summaryBox");
+    // ======== 3-step navigation + progress ========
+    let currentStep = 1;
+    const steps = [...document.querySelectorAll('.step[data-step]')];
+    const backBtn = document.getElementById('backBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const stepLabel = document.getElementById('stepLabel');
+    const stepHint = document.getElementById('stepHint');
+    const progressBar = document.getElementById('progressBar');
 
-    const N8N_WEBHOOK_URL = "YOUR_N8N_WEBHOOK_URL_HERE";
+    const hints = { 1: "Voyage", 2: "Préférences", 3: "Finalisation" };
 
-    function showToast(el, type, msg){
-      el.className = "toast " + (type === "ok" ? "ok" : "err");
-      el.textContent = msg;
-      el.style.display = "block";
+    function showStep(n){
+      currentStep = n;
+      steps.forEach(s => s.style.display = (Number(s.dataset.step) === n) ? "block" : "none");
+      backBtn.style.display = (n === 1) ? "none" : "inline-flex";
+      nextBtn.textContent = (n === 3) ? "Continuer → Paiement" : "Continuer";
+      stepLabel.textContent = `Étape ${n}/3`;
+      stepHint.textContent = hints[n] || "";
+      progressBar.style.width = (n === 1 ? "33%" : n === 2 ? "66%" : "100%");
+      window.scrollTo({top: 0, behavior: "smooth"});
+      updateRecap();
     }
 
     function isValidDates(inDate, outDate){
@@ -1096,11 +1106,90 @@
       }catch(e){ return false; }
     }
 
-    function openPaywall(summaryLines){
-      summaryBox.innerHTML = summaryLines.map(([k,v]) => (
-        `<div class="row"><span>${k}</span><span>${v}</span></div>`
-      )).join("");
-      payToast.style.display = "none";
+    function requiredOkForStep1(){
+      const dest = document.getElementById('destination')?.value?.trim();
+      const inD = document.getElementById('checkInDate')?.value?.trim();
+      const outD = document.getElementById('checkOutDate')?.value?.trim();
+      if(!dest || !inD || !outD) return false;
+      if(!isValidDates(inD, outD)) return false;
+      return true;
+    }
+
+    function requiredOkForStep3(){
+      const email = document.getElementById('email')?.value?.trim();
+      return !!email;
+    }
+
+    backBtn.addEventListener('click', () => {
+      if(currentStep > 1) showStep(currentStep - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if(currentStep === 1){
+        if(!requiredOkForStep1()){
+          alert("Remplis destination + dates (et vérifie que départ > arrivée).");
+          return;
+        }
+        showStep(2);
+        return;
+      }
+      if(currentStep === 2){
+        showStep(3);
+        return;
+      }
+      if(currentStep === 3){
+        if(!requiredOkForStep3()){
+          alert("Ajoute ton email pour recevoir le résultat.");
+          return;
+        }
+        openPaywall(); // démo
+      }
+    });
+
+    // ======== Recap ========
+    function updateRecap(){
+      const dest = document.getElementById('destination')?.value?.trim() || "—";
+      const inD = document.getElementById('checkInDate')?.value?.trim() || "—";
+      const outD = document.getElementById('checkOutDate')?.value?.trim() || "—";
+      const adults = document.getElementById('adults')?.value || "2";
+      const children = document.getElementById('children')?.value || "0";
+      const style = document.getElementById('style')?.value || "balanced";
+      const budget = document.getElementById('budget')?.value?.trim() ? `${document.getElementById('budget').value} €` : "—";
+
+      const styleLabel = ({
+        balanced: "Équilibré",
+        budget: "Petit budget",
+        comfort: "Confort",
+        luxury: "Luxe"
+      })[style] || style;
+
+      const box = document.getElementById('recapBox');
+      if(!box) return;
+
+      box.innerHTML = `
+        <div class="row"><span>Destination</span><span>${escapeHtml(dest)}</span></div>
+        <div class="row"><span>Dates</span><span>${escapeHtml(inD)} → ${escapeHtml(outD)}</span></div>
+        <div class="row"><span>Voyageurs</span><span>${escapeHtml(adults)} adultes, ${escapeHtml(children)} enfants</span></div>
+        <div class="row"><span>Style</span><span>${escapeHtml(styleLabel)}</span></div>
+        <div class="row"><span>Budget</span><span>${escapeHtml(budget)}</span></div>
+      `;
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // ======== Paywall (démo) ========
+    const paywall = document.getElementById('paywall');
+    const closePaywall = document.getElementById('closePaywall');
+    const payBtn = document.getElementById('payBtn');
+
+    function openPaywall(){
       paywall.style.display = "flex";
       document.body.style.overflow = "hidden";
     }
@@ -1111,38 +1200,20 @@
     closePaywall.addEventListener("click", closePaywallFn);
     paywall.addEventListener("click", (e) => { if(e.target === paywall) closePaywallFn(); });
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      toast.style.display = "none";
-
-      const data = Object.fromEntries(new FormData(form).entries());
-      data.adults = Number(data.adults || 2);
-      data.children = Number(data.children || 0);
-      data.roomQuantity = Number(data.roomQuantity || 1);
-
-      if(!isValidDates(data.checkInDate, data.checkOutDate)){
-        showToast(toast, "err", "Vérifie tes dates : la date de départ doit être après la date d’arrivée.");
-        return;
-      }
-
-      const summary = [
-        ["Produit", "Top 3 Travel Here"],
-        ["Prix", "9,90€"],
-        ["Livraison", "Immédiate"],
-        ["Destination", data.destination || "—"],
-        ["Dates", `${data.checkInDate} → ${data.checkOutDate}`],
-        ["Voyageurs", `${data.adults} adultes, ${data.children} enfants`],
-        ["Style", data.style || "balanced"]
-      ];
-
-      openPaywall(summary);
+    payBtn.addEventListener("click", () => {
+      // Démo : pour l’instant on simule un paiement OK
+      closePaywallFn();
+      alert("Paiement non configuré (démo). Prochaine étape : brancher Stripe/Apple Pay + envoyer vers n8n.");
     });
 
-    function paymentNotConfigured(){
-      showToast(payToast, "err", "Paiement réel non configuré (UI premium OK). Quand tu veux, je te branche Stripe/Apple Pay pour un vrai paiement.");
-    }
-    primaryPayBtn.addEventListener("click", paymentNotConfigured);
-    secondaryPayBtn.addEventListener("click", paymentNotConfigured);
+    // live recap updates
+    ["destination","checkInDate","checkOutDate","adults","children","budget","style"].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.addEventListener("change", updateRecap);
+      if(el) el.addEventListener("input", updateRecap);
+    });
+
+    showStep(1);
   </script>
 </body>
 </html>
